@@ -7,7 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
   <style>
     body {
-      background: #fff8ec;
+      background: linear-gradient(to bottom, #ffd1dc, #ffe6b3, #cceeff);
+
       font-family: 'Luckiest Guy', cursive;
       text-align: center;
       padding: 40px;
@@ -63,9 +64,102 @@
       display: none;
       margin-top: 20px;
     }
-  </style>
+    .whale-button {
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  .float {
+    animation: float 2s infinite ease-in-out;
+  }
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+  .splash {
+    animation: splash 0.5s ease-out;
+  }
+  @keyframes splash {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #ffd1dc, #ffe6b3, #cceeff);
+    z-index: -2;
+    transition: background 3s ease-in-out;
+    animation: skyTransition 20s infinite alternate;
+  }
+  @keyframes skyTransition {
+    0% {
+      background: linear-gradient(to bottom, #ffd1dc, #ffe6b3, #cceeff); /* Sunset */
+    }
+    100% {
+      background: linear-gradient(to bottom, #1e3c72, #2a5298, #000033); /* Night sky */
+    }
+  }
+  .cloud {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: floatClouds 60s linear infinite;
+  }
+  .cloud::after, .cloud::before {
+    content: "";
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+  }
+  .cloud::before {
+    width: 60px;
+    height: 60px;
+    top: -20px;
+    left: 30px;
+  }
+  .cloud::after {
+    width: 80px;
+    height: 80px;
+    top: -40px;
+    left: 60px;
+  }
+  @keyframes floatClouds {
+    0% { left: -200px; top: 10%; }
+    100% { left: 110%; top: 10%; }
+  }
+  #moon {
+    position: fixed;
+    top: 80px;
+    right: 80px;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #fff 40%, #ccc 70%, transparent 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.5);
+    z-index: -1;
+    opacity: 0;
+    animation: glowMoon 20s infinite alternate;
+  }
+  @keyframes glowMoon {
+    0% { opacity: 0; transform: scale(0.8); box-shadow: 0 0 0px 0px rgba(255, 255, 255, 0); }
+    100% { opacity: 1; transform: scale(1); box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.5); }
+  }
+</style>
 </head>
 <body>
+  <div id="moon"></div>
+  <div class="cloud" style="width: 100px; height: 100px; top: 10%; left: -150px;"></div>
+  <div class="cloud" style="width: 120px; height: 80px; top: 20%; left: -250px; animation-delay: 10s;"></div>
+  <div class="cloud" style="width: 90px; height: 90px; top: 30%; left: -350px; animation-delay: 20s;"></div>
 
   <h1>Countdown to You</h1>
 
@@ -80,10 +174,15 @@
 
   <img class="gif" src="https://media.giphy.com/media/ya4eevXU490Iw/giphy.gif" alt="Panda hug gif">
 
-  <audio controls autoplay loop>
+  <div id="music-container">
+  <audio id="bg-music" controls autoplay loop>
     <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&st=sdbwt4u8&dl=0" type="audio/mpeg">
-    Your browser does not support the audio element.
   </audio>
+  <div>
+    <button id="pause-btn" onclick="pauseMusic()" class="whale-button">🐋</button>
+<button id="play-btn" onclick="playMusic()" class="whale-button">🐳</button>
+  </div>
+</div>
 
   <div class="hidden-note" onclick="document.getElementById('voicenote-player').style.display = 'block'">
     click here unless you are sick of hearing my voice
@@ -119,8 +218,23 @@
           "Time to remember what you look like, time to cuddle, and time to maybe get ice cream.";
       }
     }, 1000);
-  </script>
+  function pauseMusic() {
+  const music = document.getElementById('bg-music');
+  const btn = document.getElementById('pause-btn');
+  music.pause();
+  btn.classList.add('float');
+}
+
+function playMusic() {
+  const music = document.getElementById('bg-music');
+  const btn = document.getElementById('play-btn');
+  music.play();
+  btn.classList.add('splash');
+  setTimeout(() => btn.classList.remove('splash'), 500);
+}
+</script>
 
 </body>
 </html>
+
 

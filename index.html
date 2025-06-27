@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Countdown to You</title>
-  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet"/>
   <style>
     body {
       margin: 0;
       font-family: 'Luckiest Guy', cursive;
       text-align: center;
       overflow-x: hidden;
-      color: #333;
+      color: white;
       background: linear-gradient(to bottom, #ffd1dc, #ffe6b3, #cceeff);
       animation: skyCycle 30s infinite alternate;
+      font-size: 1.1rem;
     }
     @keyframes skyCycle {
       0% { background: linear-gradient(to bottom, #ffd1dc, #ffe6b3, #cceeff); }
@@ -23,15 +24,15 @@
       position: absolute;
       background: #fff;
       border-radius: 50%;
-      box-shadow: -30px 0 #fff, -15px 10px #fff, 15px 10px #fff, 30px 0 #fff;
+      box-shadow: -60px 20px #fff, -30px 10px #fff, 0px 0px #fff, 30px 10px #fff, 60px 20px #fff;
       opacity: 0.8;
       animation: floatClouds 60s linear infinite;
     }
-    .cloud1 { width: 100px; height: 60px; top: 50px; left: 10%; animation-delay: 0s; }
-    .cloud2 { width: 120px; height: 70px; top: 100px; left: 70%; animation-delay: 15s; }
-    .cloud3 { width: 130px; height: 80px; top: 180px; left: 30%; animation-delay: 30s; }
+    .cloud1 { width: 200px; height: 60px; top: 50px; left: 10%; animation-delay: 0s; }
+    .cloud2 { width: 180px; height: 70px; top: 100px; left: 70%; animation-delay: 15s; }
+    .cloud3 { width: 220px; height: 80px; top: 180px; left: 30%; animation-delay: 30s; }
     @keyframes floatClouds {
-      0% { transform: translateX(-150px); }
+      0% { transform: translateX(-200px); }
       100% { transform: translateX(100vw); }
     }
     #moon {
@@ -57,31 +58,22 @@
       margin-top: 1rem;
     }
     .time-block {
-      background-color: #ffe4b5;
+      background-color: rgba(255, 228, 181, 0.8);
       padding: 20px;
       border-radius: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       font-size: 2rem;
       width: 100px;
+      color: #333;
     }
-    .label {
-      font-size: 1rem;
-      margin-top: 5px;
-    }
-    .sub {
-      font-size: 1.2rem;
-      margin-top: 30px;
-      color: #666;
-    }
+    .label { font-size: 1rem; margin-top: 5px; }
+    .sub { font-size: 1.2rem; margin-top: 30px; color: #eee; }
     .gif {
       margin-top: 30px;
       border-radius: 12px;
       max-width: 100%;
     }
-    audio {
-      display: block;
-      margin: 20px auto;
-    }
+    audio { display: block; margin: 20px auto; }
     .whale-buttons {
       display: flex;
       justify-content: center;
@@ -98,14 +90,21 @@
     .tiny {
       margin-top: 40px;
       font-size: 0.8rem;
-      color: #aaa;
+      color: #fff;
     }
     canvas {
       border: 2px solid #ccc;
       background: #e6f7ff;
       display: block;
-      margin: 30px auto;
+      margin: 50px auto;
       border-radius: 16px;
+    }
+    input, button {
+      font-family: 'Luckiest Guy', cursive;
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -123,10 +122,6 @@
     <div class="time-block"><div id="minutes">0</div><div class="label">Minutes</div></div>
     <div class="time-block"><div id="seconds">0</div><div class="label">Seconds</div></div>
   </div>
-
-  <canvas id="gameCanvas" width="400" height="500"></canvas>
-  <div style="font-size: 1.5rem;">Score: <span id="scoreDisplay">0</span></div>
-  <div style="font-size: 1rem; color: #777;">Top score: <span id="topScore">0</span></div>
 
   <img class="gif" src="https://media.giphy.com/media/ya4eevXU490Iw/giphy.gif" alt="Paper airplane gif">
 
@@ -153,6 +148,10 @@
   </div>
 
   <div class="tiny">Time to remember what you look like, time to cuddle, and time to maybe get ice cream. Oh and click above if you're not sick of hearing my voice yet</div>
+
+  <canvas id="gameCanvas" width="400" height="500"></canvas>
+  <div style="font-size: 1.5rem;">Score: <span id="scoreDisplay">0</span></div>
+  <div style="font-size: 1rem; color: #ddd;">Top score: <span id="topScore">0</span></div>
 
   <script>
     const countDownDate = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
@@ -191,11 +190,14 @@
       }
     }
 
-    // Whale game logic
     let score = 0, topScore = 0, whaleX = 160, whaleY = 450, hearts = [];
     const canvas = document.getElementById("gameCanvas"), ctx = canvas.getContext("2d");
 
-    function drawWhale() { ctx.fillStyle = "#0077cc"; ctx.fillRect(whaleX, whaleY, 80, 30); }
+    function drawWhale() {
+      ctx.fillStyle = "#0077cc";
+      ctx.fillRect(whaleX, whaleY, 80, 30);
+    }
+
     function drawHeart(x, y) {
       ctx.fillStyle = "red";
       ctx.beginPath();
@@ -206,6 +208,7 @@
       ctx.bezierCurveTo(x + 10, y - 15, x, y - 10, x, y);
       ctx.fill();
     }
+
     function updateGame() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawWhale();
@@ -226,11 +229,13 @@
       if (Math.random() < 0.03) hearts.push({ x: Math.random() * 380 + 10, y: -20 });
       requestAnimationFrame(updateGame);
     }
+
     document.addEventListener("keydown", (e) => {
       if (e.key === "ArrowLeft") whaleX -= 20;
       if (e.key === "ArrowRight") whaleX += 20;
       whaleX = Math.max(0, Math.min(whaleX, 320));
     });
+
     updateGame();
   </script>
 </body>

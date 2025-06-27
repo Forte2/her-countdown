@@ -51,7 +51,7 @@
       max-width: 100%;
     }
     audio {
-      margin-top: 40px;
+      margin-top: 20px;
     }
     #moon {
       position: fixed;
@@ -99,6 +99,29 @@
       0% { left: -200px; top: 10%; }
       100% { left: 110%; top: 10%; }
     }
+    .whale-button {
+      font-size: 2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .float {
+      animation: float 2s infinite ease-in-out;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+    .splash {
+      animation: splash 0.5s ease-out;
+    }
+    @keyframes splash {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.5); }
+      100% { transform: scale(1); }
+    }
   </style>
 </head>
 <body>
@@ -120,15 +143,27 @@
 
   <img class="gif" src="https://media.giphy.com/media/ya4eevXU490Iw/giphy.gif" alt="Paper airplane gif">
 
-  <audio controls autoplay loop>
-    <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&st=sdbwt4u8&dl=0" type="audio/mpeg">
-  </audio>
+  <div id="music-container">
+    <audio id="bg-music" controls autoplay loop>
+      <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&st=sdbwt4u8&dl=0" type="audio/mpeg">
+    </audio>
+    <div>
+      <button id="pause-btn" onclick="pauseMusic()" class="whale-button">🐋</button>
+      <button id="play-btn" onclick="playMusic()" class="whale-button">🐳</button>
+    </div>
+  </div>
 
   <div style="margin-top: 30px;">
     <label for="secret-code">Enter the name of the place we went on our first date:</label><br>
     <input type="text" id="secret-code" placeholder="hint: it starts with an S">
     <button onclick="checkCode()">Reveal</button>
     <img id="hidden-photo" src="IMG_2797.jpeg" alt="Hidden Memory" style="display:none; max-width: 80%; margin-top: 20px; border-radius: 12px;">
+  </div>
+
+  <div style="margin-top: 20px;">
+    <audio id="voicenote-player" controls>
+      <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&st=2mq5imvj&dl=0" type="audio/mpeg">
+    </audio>
   </div>
 
   <div class="tiny">Time to remember what you look like, time to cuddle, and time to maybe get ice cream.</div>
@@ -156,6 +191,21 @@
           "Time to remember what you look like, time to cuddle, and time to maybe get ice cream.";
       }
     }, 1000);
+
+    function pauseMusic() {
+      const music = document.getElementById('bg-music');
+      const btn = document.getElementById('pause-btn');
+      music.pause();
+      btn.classList.add('float');
+    }
+
+    function playMusic() {
+      const music = document.getElementById('bg-music');
+      const btn = document.getElementById('play-btn');
+      music.play();
+      btn.classList.add('splash');
+      setTimeout(() => btn.classList.remove('splash'), 500);
+    }
 
     function checkCode() {
       const input = document.getElementById('secret-code').value.trim().toLowerCase();

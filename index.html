@@ -20,17 +20,18 @@
       100% { background: linear-gradient(to bottom, #1e3c72, #2a5298, #0f2027); }
     }
     .cloud {
+      position: absolute;
       background: #fff;
       border-radius: 50%;
-      position: absolute;
-      opacity: 0.5;
+      box-shadow: -30px 0 #fff, -15px 10px #fff, 15px 10px #fff, 30px 0 #fff;
+      opacity: 0.8;
       animation: floatClouds 60s linear infinite;
     }
-    .cloud1 { width: 120px; height: 80px; top: 50px; left: 10%; animation-delay: 0s; }
-    .cloud2 { width: 100px; height: 70px; top: 100px; left: 70%; animation-delay: 15s; }
-    .cloud3 { width: 140px; height: 90px; top: 200px; left: 30%; animation-delay: 30s; }
+    .cloud1 { width: 100px; height: 60px; top: 50px; left: 10%; animation-delay: 0s; }
+    .cloud2 { width: 120px; height: 70px; top: 100px; left: 70%; animation-delay: 15s; }
+    .cloud3 { width: 130px; height: 80px; top: 180px; left: 30%; animation-delay: 30s; }
     @keyframes floatClouds {
-      0% { transform: translateX(0); }
+      0% { transform: translateX(-150px); }
       100% { transform: translateX(100vw); }
     }
     #moon {
@@ -113,127 +114,5 @@
   <div class="cloud cloud1"></div>
   <div class="cloud cloud2"></div>
   <div class="cloud cloud3"></div>
-
-  <h1 title="hi Tori 👀">You, Me, and This Countdown — A Love Triangle</h1>
-
-  <div id="countdown">
-    <div class="time-block"><div id="days">0</div><div class="label">Days</div></div>
-    <div class="time-block"><div id="hours">0</div><div class="label">Hours</div></div>
-    <div class="time-block"><div id="minutes">0</div><div class="label">Minutes</div></div>
-    <div class="time-block"><div id="seconds">0</div><div class="label">Seconds</div></div>
-  </div>
-
-  <canvas id="gameCanvas" width="400" height="500"></canvas>
-  <div style="font-size: 1.5rem;">Score: <span id="scoreDisplay">0</span></div>
-  <div style="font-size: 1rem; color: #777;">Top score: <span id="topScore">0</span></div>
-
-  <img class="gif" src="https://media.giphy.com/media/ya4eevXU490Iw/giphy.gif" alt="Paper airplane gif">
-
-  <audio id="bg-music" controls autoplay loop>
-    <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&st=sdbwt4u8&dl=0" type="audio/mpeg">
-  </audio>
-
-  <div class="whale-buttons">
-    <button id="pause-btn" onclick="pauseMusic()" class="whale-button">🐋</button>
-    <button id="play-btn" onclick="playMusic()" class="whale-button">🐳</button>
-  </div>
-
-  <div>
-    <label for="secret-code">Enter the name of the place we went on our first date:</label><br>
-    <input type="text" id="secret-code" placeholder="hint: it starts with an S">
-    <button onclick="checkCode()">Reveal</button>
-    <img id="hidden-photo" src="IMG_2797.jpeg" alt="Hidden Memory" style="display:none; max-width: 80%; margin-top: 20px; border-radius: 12px;">
-  </div>
-
-  <div style="margin-top: 20px;">
-    <audio id="voicenote-player" controls>
-      <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&st=2mq5imvj&dl=0" type="audio/mpeg">
-    </audio>
-  </div>
-
-  <div class="tiny">Time to remember what you look like, time to cuddle, and time to maybe get ice cream. Oh and click above if you're not sick of hearing my voice yet</div>
-
-  <script>
-    const countDownDate = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
-    setInterval(function() {
-      const now = new Date().getTime();
-      const distance = countDownDate - now;
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      document.getElementById("days").innerText = days;
-      document.getElementById("hours").innerText = hours;
-      document.getElementById("minutes").innerText = minutes;
-      document.getElementById("seconds").innerText = seconds;
-    }, 1000);
-
-    function pauseMusic() {
-      document.getElementById('bg-music').pause();
-      document.getElementById('pause-btn').classList.add('float');
-    }
-
-    function playMusic() {
-      document.getElementById('bg-music').play();
-      document.getElementById('play-btn').classList.add('splash');
-      setTimeout(() => document.getElementById('play-btn').classList.remove('splash'), 500);
-    }
-
-    function checkCode() {
-      const input = document.getElementById('secret-code').value.trim().toLowerCase();
-      if (input === 'scopa') {
-        const photo = document.getElementById('hidden-photo');
-        photo.style.display = 'block';
-        setTimeout(() => {
-          photo.style.display = 'none';
-          alert("Time's up! Type it in again if you want to see it.");
-        }, 20000);
-      } else {
-        alert('Nope! Try again 😉');
-      }
-    }
-
-    // Whale game logic
-    let score = 0, topScore = 0, whaleX = 160, whaleY = 450, hearts = [];
-    const canvas = document.getElementById("gameCanvas"), ctx = canvas.getContext("2d");
-
-    function drawWhale() { ctx.fillStyle = "#0077cc"; ctx.fillRect(whaleX, whaleY, 80, 30); }
-    function drawHeart(x, y) {
-      ctx.fillStyle = "red";
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.bezierCurveTo(x, y - 10, x - 10, y - 15, x - 15, y);
-      ctx.bezierCurveTo(x - 20, y + 15, x, y + 25, x, y + 35);
-      ctx.bezierCurveTo(x, y + 25, x + 20, y + 15, x + 15, y);
-      ctx.bezierCurveTo(x + 10, y - 15, x, y - 10, x, y);
-      ctx.fill();
-    }
-    function updateGame() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawWhale();
-      for (let i = 0; i < hearts.length; i++) {
-        hearts[i].y += 2;
-        drawHeart(hearts[i].x, hearts[i].y);
-        if (hearts[i].y > whaleY && hearts[i].x > whaleX && hearts[i].x < whaleX + 80) {
-          hearts.splice(i, 1);
-          score++;
-          document.getElementById('scoreDisplay').innerText = score;
-          if (score > topScore) {
-            topScore = score;
-            document.getElementById('topScore').innerText = topScore;
-          }
-          i--;
-        }
-      }
-      if (Math.random() < 0.03) hearts.push({ x: Math.random() * 380 + 10, y: -20 });
-      requestAnimationFrame(updateGame);
-    }
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") whaleX -= 20;
-      if (e.key === "ArrowRight") whaleX += 20;
-      whaleX = Math.max(0, Math.min(whaleX, 320));
-    });
-    updateGame();
-  </script>
 </body>
 </html>

@@ -33,16 +33,15 @@
 </head>
 <body>
 
-  <h1>Counting down to the next time I see you</h1>
+  <h1>Cool guy countdown til' the next time I can see your face</h1>
   <div id="countdown">Loading...</div>
-  <div class="sub">(yes, I made a website even though I said I wouldn’t)</div>
-  <div class="tiny">This page will self-destruct after cuddles.</div>
+  <div class="sub">(yes, I am insane for making this)</div>
+  <div class="tiny">This page will self-destruct... after reading... maybe.</div>
 
   <script>
-    // Set the date we're counting down to
-    const countDownDate = new Date("July 20, 2025 19:00:00").getTime();
+    // Set to June 28, 2025 at 7:00 PM
+    const countDownDate = new Date("June 28, 2025 19:00:00").getTime();
 
-    // Update every second
     const countdownfunction = setInterval(function() {
       const now = new Date().getTime();
       const distance = countDownDate - now;
@@ -57,7 +56,8 @@
 
       if (distance < 0) {
         clearInterval(countdownfunction);
-        document.getElementById("countdown").innerHTML = "🚨 It's cuddle time! 🚨";
+        document.getElementById("countdown").innerHTML = 
+          "Time to remember what you look like, time to cuddle, and time to maybe get 🍨.";
       }
     }, 1000);
   </script>

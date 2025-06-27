@@ -9,19 +9,30 @@
     html, body {
       margin: 0;
       padding: 0;
-    }
-    body {
       font-family: 'Luckiest Guy', cursive;
       text-align: center;
       overflow-x: hidden;
+      font-size: 1.1rem;
+      transition: background 2s ease;
+    }
+    body.day {
       color: white;
       background: linear-gradient(to bottom, #ffd1dc, #ffe6b3, #cceeff);
-      animation: skyCycle 30s infinite alternate;
-      font-size: 1.1rem;
     }
-    @keyframes skyCycle {
-      0% { background: linear-gradient(to bottom, #ffd1dc, #ffe6b3, #cceeff); }
-      100% { background: linear-gradient(to bottom, #1e3c72, #2a5298, #0f2027); }
+    body.night {
+      color: white;
+      background: linear-gradient(to bottom, #1e3c72, #2a5298, #0f2027);
+    }
+    .toggle-container {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      z-index: 10;
+    }
+    .toggle-container label {
+      font-size: 0.9rem;
+      margin-left: 5px;
+      color: white;
     }
     .cloud {
       position: absolute;
@@ -53,7 +64,7 @@
     }
     h1 {
       font-size: 2.5rem;
-      margin-top: 40px;
+      margin-top: 60px;
     }
     #countdown {
       display: flex;
@@ -90,10 +101,9 @@
       background: none;
       border: none;
       cursor: pointer;
-      transition: transform 0.3s ease;
     }
     .tiny {
-      margin-top: 40px;
+      margin-top: 30px;
       font-size: 0.8rem;
       color: #fff;
     }
@@ -104,15 +114,28 @@
       margin: 50px auto;
       border-radius: 16px;
     }
+    input, button {
+      font-family: 'Luckiest Guy', cursive;
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 10px;
+    }
     @media (max-width: 600px) {
       h1 { font-size: 1.8rem; margin-top: 20px; }
       body { font-size: 0.95rem; }
       .gif { max-width: 95%; margin-top: 20px; }
       canvas { width: 90% !important; height: auto !important; }
+      input, button { font-size: 1rem; width: 80%; max-width: 300px; }
     }
   </style>
 </head>
-<body>
+<body class="day">
+  <div class="toggle-container">
+    <input type="checkbox" id="modeToggle" onchange="toggleMode()">
+    <label for="modeToggle">Night Mode</label>
+  </div>
+
   <div id="moon"></div>
   <div class="cloud cloud1"></div>
   <div class="cloud cloud2"></div>
@@ -132,17 +155,17 @@
     Your browser does not support the video tag.
   </video>
 
-  <audio id="playlist" controls autoplay>
+  <audio id="bg-music" controls autoplay loop>
     <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&dl=0" type="audio/mpeg">
   </audio>
 
   <div class="whale-buttons">
-    <button onclick="document.getElementById('playlist').pause()" class="whale-button">🐋</button>
-    <button onclick="document.getElementById('playlist').play()" class="whale-button">🐳</button>
+    <button onclick="pauseMusic()" class="whale-button">🐋</button>
+    <button onclick="playMusic()" class="whale-button">🐳</button>
   </div>
 
-  <div style="margin-top: 20px;">
-    <audio id="voicenote-player" controls>
+  <div style="margin: 20px;">
+    <audio controls>
       <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&dl=0" type="audio/mpeg">
     </audio>
   </div>
@@ -155,36 +178,29 @@
 
   <script>
     const countDownDate = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
-    setInterval(() => {
+    setInterval(function() {
       const now = new Date().getTime();
       const distance = countDownDate - now;
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      document.getElementById("days").innerText = days;
-      document.getElementById("hours").innerText = hours;
-      document.getElementById("minutes").innerText = minutes;
-      document.getElementById("seconds").innerText = seconds;
+      document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+      document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
     }, 1000);
 
-    // Playlist autoplay handler
-    const playlist = document.getElementById("playlist");
-    const tracks = [
-      "https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&dl=0",
-      "https://www.dropbox.com/scl/fi/0vxk899m5yh19esc1u7fo/All-That-And-More-Sailboat.mp3?rlkey=zwlzf8d5nmpsotupubhd50uh4&raw=1",
-      "https://www.dropbox.com/scl/fi/b1bja2neem0zfpe82yimv/Do-You-Remember.mp3?rlkey=pzamspbpoej92n37ddoftprch&raw=1",
-      "https://www.dropbox.com/scl/fi/0a56znw8yg2vjlwzr3rht/Taylor-Swift-Delicate-Recorded-at-The-Tracking-Room-Nashville.mp3?rlkey=stjjumv9t9z25ckfkkb2rewk6&raw=1"
-    ];
-    let currentTrack = 0;
+    function pauseMusic() {
+      document.getElementById('bg-music').pause();
+    }
 
-    playlist.addEventListener("ended", () => {
-      currentTrack = (currentTrack + 1) % tracks.length;
-      playlist.src = tracks[currentTrack];
-      playlist.play();
-    });
+    function playMusic() {
+      document.getElementById('bg-music').play();
+    }
 
-    // Whale game
+    function toggleMode() {
+      document.body.classList.toggle("night");
+      document.body.classList.toggle("day");
+    }
+
+    // Game logic
     let score = 0, topScore = 0, whaleX = 160, whaleY = 450, hearts = [];
     const canvas = document.getElementById("gameCanvas"), ctx = canvas.getContext("2d");
 

@@ -4,45 +4,102 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Countdown to You</title>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
   <style>
     body {
-      background: #fdf6e3;
-      font-family: 'Helvetica Neue', sans-serif;
+      background: #fff8ec;
+      font-family: 'Luckiest Guy', cursive;
       text-align: center;
-      padding: 50px;
+      padding: 40px;
+      color: #333;
     }
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
+      font-size: 3rem;
+      margin-bottom: 1rem;
     }
     #countdown {
-      font-size: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
       margin-top: 1rem;
     }
+    .time-block {
+      background-color: #ffe4b5;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      font-size: 2rem;
+      width: 100px;
+    }
+    .label {
+      font-size: 1rem;
+      margin-top: 5px;
+    }
     .sub {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       margin-top: 30px;
-      color: #555;
+      color: #666;
     }
     .tiny {
-      margin-top: 50px;
+      margin-top: 40px;
       font-size: 0.8rem;
       color: #aaa;
+    }
+    .gif {
+      margin-top: 30px;
+      border-radius: 12px;
+      max-width: 100%;
+    }
+    audio {
+      margin-top: 40px;
+    }
+    .hidden-note {
+      margin-top: 30px;
+      color: #0077cc;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    #voicenote-player {
+      display: none;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Cool guy countdown til' the next time I can see your face</h1>
-  <div id="countdown">Loading...</div>
-  <div class="sub">(yes, I am insane for making this)</div>
-  <div class="tiny">This page will self-destruct... after reading... maybe.</div>
+  <h1>Countdown to You</h1>
+
+  <div id="countdown">
+    <div class="time-block"><div id="days">0</div><div class="label">Days</div></div>
+    <div class="time-block"><div id="hours">0</div><div class="label">Hours</div></div>
+    <div class="time-block"><div id="minutes">0</div><div class="label">Minutes</div></div>
+    <div class="time-block"><div id="seconds">0</div><div class="label">Seconds</div></div>
+  </div>
+
+  <div class="sub">(okay... maybe I do like digital love a *little*)</div>
+
+  <img class="gif" src="https://media.giphy.com/media/ya4eevXU490Iw/giphy.gif" alt="Panda hug gif">
+
+  <audio controls autoplay loop>
+    <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&st=sdbwt4u8&dl=0" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="hidden-note" onclick="document.getElementById('voicenote-player').style.display = 'block'">
+    click here unless you are sick of hearing my voice
+  </div>
+
+  <audio id="voicenote-player" controls>
+    <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&st=2mq5imvj&dl=0" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="tiny">Time to remember what you look like, time to cuddle, and time to maybe get ice cream.</div>
 
   <script>
-    // Set to June 28, 2025 at 7:00 PM
-    const countDownDate = new Date("June 28, 2025 19:00:00").getTime();
+    const countDownDate = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
 
-    const countdownfunction = setInterval(function() {
+    const x = setInterval(function() {
       const now = new Date().getTime();
       const distance = countDownDate - now;
 
@@ -51,16 +108,19 @@
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      document.getElementById("countdown").innerHTML =
-        days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+      document.getElementById("days").innerHTML = days;
+      document.getElementById("hours").innerHTML = hours;
+      document.getElementById("minutes").innerHTML = minutes;
+      document.getElementById("seconds").innerHTML = seconds;
 
       if (distance < 0) {
-        clearInterval(countdownfunction);
-        document.getElementById("countdown").innerHTML = 
-          "Time to remember what you look like, time to cuddle, and time to maybe get 🍨.";
+        clearInterval(x);
+        document.getElementById("countdown").innerHTML =
+          "Time to remember what you look like, time to cuddle, and time to maybe get ice cream.";
       }
     }, 1000);
   </script>
 
 </body>
 </html>
+

@@ -153,9 +153,72 @@
     0% { opacity: 0; transform: scale(0.8); box-shadow: 0 0 0px 0px rgba(255, 255, 255, 0); }
     100% { opacity: 1; transform: scale(1); box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.5); }
   }
+  .star {
+    position: absolute;
+    top: 15%;
+    left: 20%;
+    font-size: 2rem;
+    cursor: pointer;
+    animation: twinkle 2s infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+  #star-popup {
+    display: none;
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+  }
+  #hidden-photo {
+    display: none;
+    max-width: 80%;
+    margin-top: 20px;
+    border-radius: 12px;
+  }
+  .whale-bubble {
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    color: #333;
+    animation: floatBubble 3s infinite;
+  }
+  @keyframes floatBubble {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -55%) scale(1.05); }
+  }
+  .ripple {
+    animation: rippleEffect 1s ease-out;
+  }
+  @keyframes rippleEffect {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(2); opacity: 0; }
+  }
 </style>
 </head>
 <body>
+  
+  <div style="margin-top: 30px;">
+  <label for="secret-code">Enter the name of the place we went on our first date:</label><br>
+  <input type="text" id="secret-code" placeholder="hint: it starts with an S">
+  <button onclick="checkCode()">Reveal</button>
+  <img id="hidden-photo" src="IMG_2797.jpeg" alt="Hidden Memory" style="display:none;">
+</div>
+  <div class="whale-bubble">the whale is begging to be clicked</div>
   <div id="moon"></div>
   <div class="cloud" style="width: 100px; height: 100px; top: 10%; left: -150px;"></div>
   <div class="cloud" style="width: 120px; height: 80px; top: 20%; left: -250px; animation-delay: 10s;"></div>
@@ -170,9 +233,9 @@
     <div class="time-block"><div id="seconds">0</div><div class="label">Seconds</div></div>
   </div>
 
-  <div class="sub">(okay... maybe I do like digital love a *little*)</div>
+  <div class="sub">this page will self destruct... eventually... but don't worry about it</div>
 
-  <img class="gif" src="https://media.giphy.com/media/ya4eevXU490Iw/giphy.gif" alt="Panda hug gif">
+  <img class="gif" src="https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif" alt="Graceful whale swimming gif" onclick="showRipple(this); document.getElementById('hidden-photo').style.display = 'block';">
 
   <div id="music-container">
   <audio id="bg-music" controls autoplay loop>
@@ -231,6 +294,21 @@ function playMusic() {
   music.play();
   btn.classList.add('splash');
   setTimeout(() => btn.classList.remove('splash'), 500);
+}
+function showRipple(element) {
+  element.classList.add('ripple');
+  setTimeout(() => element.classList.remove('ripple'), 1000);
+}
+function checkCode() {
+  const input = document.getElementById('secret-code').value.trim().toLowerCase();
+  if (input === 'scopa') {
+    const photo = document.getElementById('hidden-photo');
+    photo.style.display = 'block';
+    setTimeout(() => {
+      photo.style.display = 'none';
+      alert('Time else {
+    alert('Nope! Try again 😉');
+  }
 }
 </script>
 

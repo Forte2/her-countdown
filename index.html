@@ -70,68 +70,18 @@
       0% { opacity: 0; transform: scale(0.8); box-shadow: 0 0 0px 0px rgba(255, 255, 255, 0); }
       100% { opacity: 1; transform: scale(1); box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.5); }
     }
-    .cloud {
-      position: absolute;
-      background: #fff;
-      border-radius: 50%;
-      opacity: 0.6;
-      animation: floatClouds 60s linear infinite;
-    }
-    .cloud::after, .cloud::before {
-      content: "";
-      position: absolute;
-      background: #fff;
-      border-radius: 50%;
-    }
-    .cloud::before {
-      width: 60px;
-      height: 60px;
-      top: -20px;
-      left: 30px;
-    }
-    .cloud::after {
-      width: 80px;
-      height: 80px;
-      top: -40px;
-      left: 60px;
-    }
-    @keyframes floatClouds {
-      0% { left: -200px; top: 10%; }
-      100% { left: 110%; top: 10%; }
-    }
-    .whale-button {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    .float {
-      animation: float 2s infinite ease-in-out;
-    }
-    @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0); }
-    }
-    .splash {
-      animation: splash 0.5s ease-out;
-    }
-    @keyframes splash {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.5); }
-      100% { transform: scale(1); }
+    canvas {
+      border: 2px solid #ccc;
+      background: #cceeff;
+      display: block;
+      margin: 40px auto;
+      border-radius: 16px;
     }
   </style>
 </head>
 <body>
   <div id="moon"></div>
-  <div class="cloud" style="width: 100px; height: 100px; top: 10%; left: -150px;"></div>
-  <div class="cloud" style="width: 120px; height: 80px; top: 20%; left: -250px; animation-delay: 10s;"></div>
-  <div class="cloud" style="width: 90px; height: 90px; top: 30%; left: -350px; animation-delay: 20s;"></div>
-
-  <h1>Countdown to You</h1>
-
+  <h1 title="hi Tori 👀">\1</h1>
   <div id="countdown">
     <div class="time-block"><div id="days">0</div><div class="label">Days</div></div>
     <div class="time-block"><div id="hours">0</div><div class="label">Hours</div></div>
@@ -143,15 +93,9 @@
 
   <img class="gif" src="https://media.giphy.com/media/ya4eevXU490Iw/giphy.gif" alt="Paper airplane gif">
 
-  <div id="music-container">
-    <audio id="bg-music" controls autoplay loop>
-      <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&st=sdbwt4u8&dl=0" type="audio/mpeg">
-    </audio>
-    <div>
-      <button id="pause-btn" onclick="pauseMusic()" class="whale-button">🐋</button>
-      <button id="play-btn" onclick="playMusic()" class="whale-button">🐳</button>
-    </div>
-  </div>
+  <audio id="bg-music" controls autoplay loop>
+    <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&st=sdbwt4u8&dl=0" type="audio/mpeg">
+  </audio>
 
   <div style="margin-top: 30px;">
     <label for="secret-code">Enter the name of the place we went on our first date:</label><br>
@@ -166,46 +110,29 @@
     </audio>
   </div>
 
-  <div class="tiny">Time to remember what you look like, time to cuddle, and time to maybe get ice cream.</div>
+  <div class="tiny">Time to remember what you look like, time to cuddle, and time to maybe get ice cream. Oh and click above if you're not sick of hearing my voice yet</div>
+
+  <canvas id="gameCanvas" width="400" height="500"></canvas>
+<div style="font-size: 1.5rem; margin-top: 10px;">Score: <span id="scoreDisplay">0</span></div>
 
   <script>
     const countDownDate = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
-
     const x = setInterval(function() {
       const now = new Date().getTime();
       const distance = countDownDate - now;
-
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
       document.getElementById("days").innerHTML = days;
       document.getElementById("hours").innerHTML = hours;
       document.getElementById("minutes").innerHTML = minutes;
       document.getElementById("seconds").innerHTML = seconds;
-
       if (distance < 0) {
         clearInterval(x);
-        document.getElementById("countdown").innerHTML =
-          "Time to remember what you look like, time to cuddle, and time to maybe get ice cream.";
+        document.getElementById("countdown").innerHTML = "Time to remember what you look like, time to cuddle, and time to maybe get ice cream.";
       }
     }, 1000);
-
-    function pauseMusic() {
-      const music = document.getElementById('bg-music');
-      const btn = document.getElementById('pause-btn');
-      music.pause();
-      btn.classList.add('float');
-    }
-
-    function playMusic() {
-      const music = document.getElementById('bg-music');
-      const btn = document.getElementById('play-btn');
-      music.play();
-      btn.classList.add('splash');
-      setTimeout(() => btn.classList.remove('splash'), 500);
-    }
 
     function checkCode() {
       const input = document.getElementById('secret-code').value.trim().toLowerCase();
@@ -220,6 +147,61 @@
         alert('Nope! Try again 😉');
       }
     }
+
+    // Whale heart catcher game
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    let whaleX = 160;
+    const whaleY = 450;
+    let hearts = [];
+    let score = 0;
+
+    function drawWhale() {
+      ctx.fillStyle = "#0077cc";
+      ctx.fillRect(whaleX, whaleY, 80, 30);
+    }
+
+    function drawHeart(x, y) {
+      ctx.fillStyle = "red";
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.bezierCurveTo(x, y - 10, x - 10, y - 15, x - 15, y);
+      ctx.bezierCurveTo(x - 20, y + 15, x, y + 25, x, y + 35);
+      ctx.bezierCurveTo(x, y + 25, x + 20, y + 15, x + 15, y);
+      ctx.bezierCurveTo(x + 10, y - 15, x, y - 10, x, y);
+      ctx.fill();
+    }
+
+    function updateGame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawWhale();
+      for (let i = 0; i < hearts.length; i++) {
+        hearts[i].y += 2;
+        drawHeart(hearts[i].x, hearts[i].y);
+        if (
+          hearts[i].y > whaleY &&
+          hearts[i].x > whaleX &&
+          hearts[i].x < whaleX + 80
+        ) {
+          hearts.splice(i, 1);
+          score++;
+          i--;
+          document.getElementById('scoreDisplay').innerText = score;
+        }
+      }
+      if (Math.random() < 0.03) {
+        hearts.push({ x: Math.random() * 380 + 10, y: -20 });
+      }
+      requestAnimationFrame(updateGame);
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") whaleX -= 20;
+      if (e.key === "ArrowRight") whaleX += 20;
+      whaleX = Math.max(0, Math.min(whaleX, 320));
+    });
+
+    updateGame();
   </script>
 </body>
 </html>

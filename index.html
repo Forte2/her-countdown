@@ -30,7 +30,7 @@ body.night {
   cursor: pointer;
   font-family: 'Luckiest Guy', cursive;
 }
-.clock-container {
+.info-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,7 +38,7 @@ body.night {
   gap: 10px;
   margin: 10px;
 }
-.clock-box, .temp-box {
+.info-box {
   background: rgba(0,0,0,0.3);
   padding: 5px 10px;
   border-radius: 8px;
@@ -173,22 +173,8 @@ input, button {
   font-size: 1.2rem;
   max-width: 90%;
 }
-  .info-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 10px;
-}
-.info-box {
-  background: rgba(0,0,0,0.3);
-  padding: 5px 10px;
-  border-radius: 8px;
-  font-size: 1rem;
-}
 @media (max-width: 600px) {
-  .clock-container {
+  .info-container {
     flex-direction: column;
     align-items: center;
   }

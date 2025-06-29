@@ -6,45 +6,34 @@
 <title>hey pretty mama</title>
 <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet"/>
 <style>
-/* ---------- BASIC LAYOUT ---------- */
-html,body{margin:0;padding:0;font-family:'Luckiest Guy',cursive;text-align:center;overflow-x:hidden;color:#fff;font-size:1.1rem;background:linear-gradient(to bottom,#ffd1dc,#ffe6b3,#cceeff);transition:background 2s}
+html,body{margin:0;padding:0;font-family:'Luckiest Guy',cursive;text-align:center;overflow-x:hidden;color:#fff;background:linear-gradient(to bottom,#ffd1dc,#ffe6b3,#cceeff);font-size:1.1rem;transition:background 2s}
 body.night{background:linear-gradient(to bottom,#1e3c72,#2a5298,#0f2027)}
-h1{font-size:2.5rem;margin-top:20px}
-
-/* ---------- TOGGLE BUTTON ---------- */
 .toggle-btn{margin-top:10px;padding:8px 16px;border-radius:10px;border:none;background:#fff;color:#333;cursor:pointer;font-family:'Luckiest Guy',cursive}
-
-/* ---------- INFO BAR ---------- */
 .info-container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin:10px}
 .info-box{background:rgba(0,0,0,.3);padding:5px 10px;border-radius:8px;font-size:1rem;transition:background 1s}
-
-/* ---------- SUN / MOON ---------- */
-#sun,#moon{display:inline-block;width:80px;height:80px;border-radius:50%;box-shadow:0 0 30px 10px rgba(255,255,255,.5);opacity:.7;margin:10px auto}
-#sun{background:radial-gradient(circle,#ffecb3 40%,#ffd54f 70%,transparent 100%)}
+#moon,#sun{position:relative;display:inline-block;margin:20px auto;width:80px;height:80px;border-radius:50%;box-shadow:0 0 30px 10px rgba(255,255,255,.5);opacity:.7}
 #moon{background:radial-gradient(circle,#fff 40%,#ccc 70%,transparent 100%)}
-
-/* ---------- CLOUDS ---------- */
+#sun{background:radial-gradient(circle,#ffecb3 40%,#ffd54f 70%,transparent 100%)}
 @keyframes floatClouds{0%{transform:translateX(0)}100%{transform:translateX(150vw)}}
 .cloud{position:absolute;background:#fff;border-radius:50%;box-shadow:-60px 20px #fff,-30px 10px #fff,0 0 #fff,30px 10px #fff,60px 20px #fff;opacity:.8;animation:floatClouds 60s linear infinite;transform:translateX(-200px)}
-.cloud1{width:200px;height:60px;top:50px;left:-250px}
+.cloud1{width:200px;height:60px;top:50px;left:-250px;animation-delay:0s}
 .cloud2{width:180px;height:70px;top:100px;left:-300px;animation-delay:10s}
 .cloud3{width:220px;height:80px;top:180px;left:-350px;animation-delay:20s}
-
-/* ---------- COUNTDOWN ---------- */
+#ufo{position:absolute;top:120px;left:-50px;font-size:2rem;z-index:3;display:none;pointer-events:none}
+.head{position:absolute;top:50%;right:-100px;z-index:3;display:none;pointer-events:none}
+h1{font-size:2.5rem;margin-top:20px}
 #countdown{display:flex;justify-content:center;gap:20px;margin-top:1rem;flex-wrap:wrap}
 .time-block{background:rgba(255,228,181,.8);padding:20px;border-radius:20px;box-shadow:0 4px 10px rgba(0,0,0,.1);font-size:2rem;width:100px;color:#333}
 .label{font-size:1rem;margin-top:5px}
-
-/* ---------- GAME CANVAS ---------- */
-canvas.game-canvas{border:2px solid #ccc;background:#e6f7ff;display:block;margin:50px auto;border-radius:16px}
-
-/* ---------- SMALL ELEMENTS ---------- */
+.gif{margin-top:30px;border-radius:12px;max-width:100%}
+audio{display:block;margin:20px auto;border-radius:8px}
 .whale-buttons{display:flex;justify-content:center;gap:20px;margin-bottom:20px;flex-wrap:wrap}
 .whale-button{font-size:2rem;background:none;border:none;cursor:pointer}
 .tiny{margin-top:20px;font-size:.8rem;color:#fff}
-audio{display:block;margin:20px auto;border-radius:8px}
-
-/* ---------- RESPONSIVE ---------- */
+canvas.game-canvas{border:2px solid #ccc;background:#e6f7ff;display:block;margin:50px auto;border-radius:16px}
+.arrow-buttons{margin-top:10px}
+.arrow-buttons button{font-size:2rem;margin:0 20px;background:#fff;color:#333;border-radius:10px;cursor:pointer;touch-action:manipulation}
+#daily-fact{margin:30px auto;font-size:1.2rem;max-width:90%}
 @media(max-width:600px){
   .info-container{flex-direction:column;align-items:center}
   h1{font-size:2rem;margin-top:20px}
@@ -56,23 +45,24 @@ audio{display:block;margin:20px auto;border-radius:8px}
 <!-- Stars + Clouds + Heads -->
 <canvas id="stars-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0"></canvas>
 <div class="cloud cloud1"></div><div class="cloud cloud2"></div><div class="cloud cloud3"></div>
-<div id="head1" class="head"><img src="https://dl.dropboxusercontent.com/scl/fi/at6j5aa64x3t1zw8hgnja/IMG_2568-removebg-preview.png" width="60"></div>
-<div id="head2" class="head"><img src="https://dl.dropboxusercontent.com/scl/fi/7wf3kkx881fi67nfjzll4/IMG_3133-removebg-preview.png" width="60"></div>
 
-<!-- Info bar -->
+<!-- Floating heads -->
+<div id="head1" class="head"><img src="https://dl.dropboxusercontent.com/scl/fi/at6j5aa64x3t1zw8hgnja/IMG_2568-removebg-preview.png?raw=1" width="60"></div>
+<div id="head2" class="head"><img src="https://dl.dropboxusercontent.com/scl/fi/7wf3kkx881fi67nfjzll4/IMG_3133-removebg-preview.png?raw=1" width="60"></div>
+
+<!-- info bar -->
 <div class="info-container">
   <div class="info-box" id="single-clock">Loading time…</div>
-  <div class="info-box" id="airMood"   title="Loading AQI…">Loading air mood…</div>
+  <div class="info-box" id="airMood" title="Loading AQI…">Loading air mood…</div>
   <div class="info-box" id="temp">Loading temperature…</div>
 </div>
 
-<!-- Sun / Moon -->
-<div id="sun"></div><div id="moon" style="display:none"></div>
+<!-- sun / moon sits here -->
+<div id="moon"></div><div id="sun"></div>
 
 <h1 title="hi tori 👀">You, Me, and This Countdown — A Love Triangle</h1>
 <button class="toggle-btn" onclick="toggleMode()">Toggle Day/Night</button>
 
-<!-- Countdown -->
 <div id="countdown">
   <div class="time-block"><div id="days">0</div><div class="label">Days</div></div>
   <div class="time-block"><div id="hours">0</div><div class="label">Hours</div></div>
@@ -80,125 +70,128 @@ audio{display:block;margin:20px auto;border-radius:8px}
   <div class="time-block"><div id="seconds">0</div><div class="label">Seconds</div></div>
 </div>
 
-<!-- Cute gif -->
 <video class="gif" autoplay loop muted playsinline>
   <source src="244188_small.mp4" type="video/mp4">
 </video>
 
-<!-- Background music -->
+<!-- background music -->
 <audio id="bg-music" controls autoplay loop>
-  <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&dl=0" type="audio/mpeg">
+  <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?raw=1" type="audio/mpeg">
 </audio>
 <div class="whale-buttons">
-  <button class="whale-button" onclick="pauseMusic()">🐋</button>
-  <button class="whale-button" onclick="playMusic()">🐳</button>
+  <button onclick="pauseMusic()" class="whale-button">🐋</button>
+  <button onclick="playMusic()"  class="whale-button">🐳</button>
 </div>
 
-<!-- Secret photo -->
+<!-- secret photo -->
 <label for="secret-code">Enter the name of the place we went on our first date:</label><br>
-<input id="secret-code" placeholder="hint: nope 😜" oninput="checkCode()">
+<input id="secret-code" placeholder="hint: jk, no hints" oninput="checkCode()">
 <img id="hidden-photo" src="IMG_2797.jpeg" style="display:none;max-width:80%;margin-top:20px;border-radius:12px">
 
-<!-- Voice note -->
+<!-- voice note -->
 <audio controls style="margin-top:20px">
-  <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&dl=0" type="audio/mpeg">
+  <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?raw=1" type="audio/mpeg">
 </audio>
 
-<!-- Game -->
+<!-- game -->
 <canvas id="gameCanvas" class="game-canvas" width="400" height="500"></canvas>
-<div class="arrow-buttons">
-  <button onclick="moveLeft()">⬅️</button>
-  <button onclick="moveRight()">➡️</button>
-</div>
+<div class="arrow-buttons"><button onclick="moveLeft()">⬅️</button><button onclick="moveRight()">➡️</button></div>
 <div style="font-size:1.5rem;margin-top:20px">Score: <span id="scoreDisplay">0</span></div>
 
-<!-- Whale fact & sound -->
 <div id="daily-fact">🐋 Whale Fact: Loading…</div>
-<audio id="whale-sound"><source src="https://dl.dropboxusercontent.com/scl/fi/gqm7x0nqkv73l89wgil01/Singing-whales.mp3?rlkey=57v52ln03b09714f1cmzq813i&dl=1" type="audio/mpeg"></audio>
+
+<!-- whale sound -->
+<audio id="whale-sound"><source src="https://dl.dropboxusercontent.com/scl/fi/gqm7x0nqkv73l89wgil01/Singing-whales.mp3?raw=1" type="audio/mpeg"></audio>
 <div class="tiny" style="cursor:pointer" onclick="playWhaleSound()">🔊 Hear what the whale has to say about Israel</div>
 
 <script>
-/* ---------- HELPER FUNCTIONS ---------- */
+/* helper */
 const $ = id => document.getElementById(id);
 
-/* ---------- COUNTDOWN ---------- */
-const target = new Date("2025-08-28T17:00:00-07:00").getTime();
+/* === Countdown === */
+const target = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
 setInterval(()=>{
-  const d = target - Date.now();
-  $("days").textContent    = Math.floor(d/864e5);
-  $("hours").textContent   = Math.floor(d%864e5/36e5);
-  $("minutes").textContent = Math.floor(d%36e5/6e4);
-  $("seconds").textContent = Math.floor(d%6e4/1e3);
+  const d=target-Date.now();
+  $("days").textContent   = Math.floor(d/864e5);
+  $("hours").textContent  = Math.floor(d%864e5/36e5);
+  $("minutes").textContent= Math.floor(d%36e5/6e4);
+  $("seconds").textContent= Math.floor(d%6e4/1e3);
 },1000);
 
-/* ---------- MUSIC ---------- */
-function pauseMusic(){ $("bg-music").pause(); }
-function playMusic(){ $("bg-music").play(); }
+/* === Music buttons === */
+const music = $("bg-music");
+function pauseMusic(){ music.pause(); }
+function playMusic(){ music.play(); }
 
-/* ---------- SECRET CODE ---------- */
-function checkCode(){
-  $("hidden-photo").style.display =
-    $("secret-code").value.trim().toLowerCase()==="scopa"?"block":"none";
+/* === Whale tap-sound === */
+function playWhaleSound(){ const a=$("whale-sound"); a.currentTime=0; a.play(); }
+
+/* === Day / Night toggle === */
+function toggleMode(){
+  document.body.classList.toggle("night");
+  $("moon").style.display = document.body.classList.contains("night")?"block":"none";
+  $("sun").style.display  = document.body.classList.contains("night")?"none":"block";
+  updateSingleClock(); updateTemperature(); updateAirMood();
 }
 
-/* ---------- WHALE FACT ---------- */
+/* === Secret code === */
+function checkCode(){ $("hidden-photo").style.display=
+  $("secret-code").value.trim().toLowerCase()==="scopa"?"block":"none"; }
+
+/* === Whale facts === */
 const facts=[
-  "Blue whales’ hearts are the size of a small car.",
-  "Sperm whales sleep vertically like logs.",
-  "Belugas can mimic human speech rhythms.",
-  "Gray whales spy-hop to peek above water.",
-  "Bowheads can live more than 200 years!"
+  "Blue whales have hearts the size of a small car.",
+  "Sperm whales sleep vertically in the water.",
+  "Beluga whales can mimic human voices.",
+  "Gray whales are known to spy-hop.",
+  "Narwhal tusks can flex about a foot.",
+  "Bowhead whales can live over 200 years.",
+  "Orcas are the world’s largest dolphins.",
+  "A blue whale’s tongue weighs as much as an elephant.",
+  "Minke whales often approach boats out of curiosity.",
+  "Beaked whales can dive nearly 10 000 ft."
 ];
 $("daily-fact").textContent="🐋 Whale Fact: "+facts[new Date().getDate()%facts.length];
 
-/* ---------- GAME ---------- */
-let score=0,wx=160,wy=450,hearts=[];
-const g= $("gameCanvas"),ctx=g.getContext("2d");
+/* === Simple side-scroll game === */
+let score=0, wx=160, wy=450, hearts=[], ctx=$("gameCanvas").getContext("2d");
 function drawWhale(){ctx.fillStyle="#0077cc";ctx.fillRect(wx,wy,80,30);}
-function drawHeart(x,y){
-  ctx.fillStyle="red";
-  ctx.beginPath();
-  ctx.moveTo(x,y);
-  ctx.bezierCurveTo(x,y-10,x-10,y-15,x-15,y);
-  ctx.bezierCurveTo(x-20,y+15,x,y+25,x,y+35);
-  ctx.bezierCurveTo(x,y+25,x+20,y+15,x+15,y);
-  ctx.bezierCurveTo(x+10,y-15,x,y-10,x,y);
-  ctx.fill();
-}
+function drawHeart(x,y){ctx.fillStyle="red";ctx.beginPath();
+ ctx.moveTo(x,y);ctx.bezierCurveTo(x,y-10,x-10,y-15,x-15,y);
+ ctx.bezierCurveTo(x-20,y+15,x,y+25,x,y+35);
+ ctx.bezierCurveTo(x,y+25,x+20,y+15,x+15,y);
+ ctx.bezierCurveTo(x+10,y-15,x,y-10,x,y);ctx.fill();}
+function updateGame(){
+  ctx.clearRect(0,0,400,500);drawWhale();
+  for(let i=0;i<hearts.length;i++){
+    hearts[i].y+=2;drawHeart(hearts[i].x,hearts[i].y);
+    if(hearts[i].y>wy&&hearts[i].x>wx&&hearts[i].x<wx+80){
+      hearts.splice(i,1);score++;$("scoreDisplay").textContent=score;i--;} }
+  if(Math.random()<.03)hearts.push({x:Math.random()*380+10,y:-20});
+  requestAnimationFrame(updateGame);}
 function moveLeft(){wx=Math.max(0,wx-20);}
 function moveRight(){wx=Math.min(320,wx+20);}
 document.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")moveLeft();if(e.key==="ArrowRight")moveRight();});
-(function loop(){
-  ctx.clearRect(0,0,g.width,g.height);
-  drawWhale();
-  hearts.forEach((h,i)=>{
-    h.y+=2; drawHeart(h.x,h.y);
-    if(h.y>wy && h.x>wx && h.x<wx+80){hearts.splice(i,1);score++;$("scoreDisplay").textContent=score;}
-  });
-  if(Math.random()<0.03)hearts.push({x:Math.random()*380+10,y:-20});
-  requestAnimationFrame(loop);
-})();
 
-/* ---------- STARS ---------- */
+/* === Stars === */
 const sc=$("stars-canvas"),sctx=sc.getContext("2d");let stars=[],shoot=null;
 function sizeStars(){sc.width=innerWidth;sc.height=innerHeight;}
 addEventListener("resize",sizeStars);sizeStars();
 for(let i=0;i<150;i++)stars.push({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.5,a:Math.random(),d:Math.random()*0.02});
-function shootStar(){shoot={x:Math.random()*sc.width,y:0,r:2,s:10};}
-setInterval(()=>{if(document.body.classList.contains("night")&&!shoot&&Math.random()<.1)shootStar();},1000);
-(function starLoop(){
+function shootStar(){shoot={x:Math.random()*sc.width,y:0,r:2,s:10}}
+setInterval(()=>{if(document.body.classList.contains("night")&&!shoot&&Math.random()<.1)shootStar();},1e3);
+function starLoop(){
   sctx.clearRect(0,0,sc.width,sc.height);
   if(document.body.classList.contains("night")){
     stars.forEach(s=>{s.a+=s.d;if(s.a<=0||s.a>=1)s.d=-s.d;
-      sctx.beginPath();sctx.arc(s.x,s.y,s.r,0,2*Math.PI);
-      sctx.fillStyle=`rgba(255,255,255,${s.a})`;sctx.fill();});
-    if(shoot){sctx.beginPath();sctx.arc(shoot.x,shoot.y,shoot.r,0,2*Math.PI);sctx.fillStyle="#fff";sctx.fill();
+      sctx.beginPath();sctx.arc(s.x,s.y,s.r,0,Math.PI*2);sctx.fillStyle=`rgba(255,255,255,${s.a})`;sctx.fill();});
+    if(shoot){sctx.beginPath();sctx.arc(shoot.x,shoot.y,shoot.r,0,Math.PI*2);sctx.fill();
       shoot.x+=shoot.s;shoot.y+=shoot.s;if(shoot.y>sc.height)shoot=null;}
   }
-  requestAnimationFrame(starLoop);
-})();
+  requestAnimationFrame(starLoop);}
+starLoop();
 
-/* ---------- FLOATING HEADS ---------- */
+/* === Floating heads === */
 function spawnHead(el){
   if(!document.body.classList.contains("night"))return;
   el.style.display="block";let x=innerWidth+100,y=innerHeight/2+(Math.random()*50-25);
@@ -207,71 +200,59 @@ function spawnHead(el){
     if(x<-100){clearInterval(id);el.style.display="none";}
   },30);
 }
-setInterval(setInterval(() => spawnHead($("head1")), 5000);  // 5 s
-setInterval(() => spawnHead($("head2")), 5000);  // 5 s
+setInterval(()=>spawnHead($("head1")),5000); // 5 s test
+setInterval(()=>spawnHead($("head2")),7000); // 7 s test
 
-/* ---------- CLOCK ---------- */
-function updateClock(){
-  const night=document.body.classList.contains("night");
-  const tz=night?"America/New_York":"America/Los_Angeles";
-  const lab=night?"Your Time":"Tyler's Time";
-  const time=new Date().toLocaleTimeString('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit'});
-  $("single-clock").textContent=`${lab}: ${time}`;
+/* === Clocks / Weather / AQI === */
+function updateSingleClock(){
+  const n=document.body.classList.contains("night"),tz=n?"America/New_York":"America/Los_Angeles";
+  $("single-clock").textContent=(n?"Your Time":"Tyler's Time")+": "+
+    new Date().toLocaleTimeString('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit'});}
+const apiKey="113bf4b240cd4c9a81e42115252906";
+async function updateTemperature(){
+  const n=document.body.classList.contains("night"),coords=n?"40.7033,-74.0110":"34.0122,-118.4279",
+        lbl=n?"Your temperature":"Tyler's temperature",tempDiv=$("temp");
+  try{const r=await fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${coords}`),
+       d=await r.json();tempDiv.textContent=`${lbl}: ${d.current.temp_f}°F`;}
+  catch{tempDiv.textContent="Temperature unavailable.";}
 }
-setInterval(updateClock,1000);updateClock();
-
-/* ---------- WEATHER & AQI ---------- */
-const API="113bf4b240cd4c9a81e42115252906";
-function updateTemp(){
-  const night=document.body.classList.contains("night");
-  const coords=night?"40.7033,-74.0110":"34.0122,-118.4279";
-  const lab=night?"Your temperature":"Tyler's temperature";
-  fetch(`https://api.weatherapi.com/v1/current.json?key=${API}&q=${coords}`)
-   .then(r=>r.json()).then(d=>{$("temp").textContent=`${lab}: ${d.current.temp_f}°F`;})
-   .catch(()=>$("temp").textContent="Temperature unavailable.");
-}
-function updateAQI(){
-  const night=document.body.classList.contains("night");
-  const coords=night?"40.7033,-74.0110":"34.0122,-118.4279";
-  fetch(`https://api.weatherapi.com/v1/current.json?key=${API}&q=${coords}&aqi=yes`)
-   .then(r=>r.json()).then(d=>{
-     const idx=d.current.air_quality["us-epa-index"];
-     localStorage.setItem("lastAQI",idx);
-     const moods=[
-      "✨ Air’s basically filtered, reverse osmosis vibes.",
-      "🫧 Kinda clean, ngl.",
-      "😗✌️ Meh. Kinda mid.",
-      "🫠 Low-key crusty out here.",
-      "😮‍💨 The air is literally buns af.",
-      "☠️ Babe don’t breathe this."
-     ];
-     $("airMood").textContent="Air Mood: "+(moods[idx-1]||"🤷‍♂️ Unknown");
-     $("airMood").title=`AQI index: ${idx}`;
-     $("airMood").style.background=idx>=4?"rgba(255,0,0,.4)":"rgba(0,0,0,.3)";
-   })
-   .catch(()=>{
-     const cached=localStorage.getItem("lastAQI");
-     if(cached){$("airMood").title=`AQI index: ${cached}`;}
-     $("airMood").textContent="Air Mood: unavailable.";
-   });
-}
-updateTemp();updateAQI();setInterval(updateTemp,900000);setInterval(updateAQI,900000);
-
-/* ---------- TOGGLE DAY/NIGHT ---------- */
-function toggleMode(){
-  document.body.classList.toggle("night");
-  $("moon").style.display=document.body.classList.contains("night")?"block":"none";
-  $("sun").style.display=document.body.classList.contains("night")?"none":"block";
-  updateClock();updateTemp();updateAQI();
+const moods=[
+ "✨ Air’s basically filtered, reverse osmosis vibes.",
+ "🫧 Kinda clean, ngl.",
+ "😗✌️ Meh. Kinda mid.",
+ "🫠 Low-key crusty out here.",
+ "😮‍💨 The air is literally buns af.",
+ "☠️ Babe don’t breathe this."
+];
+async function updateAirMood(){
+  const n=document.body.classList.contains("night"),coords=n?"40.7033,-74.0110":"34.0122,-118.4279",air=$("airMood");
+  try{
+    const r=await fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${coords}&aqi=yes`),
+          d=await r.json(),idx=d.current.air_quality["us-epa-index"],m=moods[idx-1]||"🤷‍♂️ Air status unknown.";
+    air.textContent="Air Mood: "+m;air.title="AQI index: "+idx;localStorage.setItem("lastAQI",idx);
+    air.style.background=idx>=4?"rgba(255,0,0,.4)":"rgba(0,0,0,.3)";
+  }catch{air.textContent="Air Mood: unavailable.";}
 }
 
-/* ---------- WHALE SOUND ---------- */
-function playWhaleSound(){
-  const a=$("whale-sound");a.currentTime=0;a.play();
+/* === UFO fly-by (just for fun) === */
+function spawnUFO(){
+  if(!document.body.classList.contains("night")||Math.random()>.1)return;
+  const u=$("ufo");u.style.display="block";let x=-50;const id=setInterval(()=>{
+    x+=2;u.style.left=x+"px";if(x>innerWidth+50){clearInterval(id);u.style.display="none";}},30);
 }
+setInterval(spawnUFO,15000);
 
-/* ---------- INITIAL VISIBILITY ---------- */
-$("sun").style.display="block";$("moon").style.display="none";
+/* === init after DOM ready === */
+function init(){
+  $("moon").style.display="none";          // start in day mode
+  updateSingleClock();updateTemperature();updateAirMood();
+  animateStars();updateGame();
+}
+document.addEventListener("DOMContentLoaded",init);
+/* periodic refreshes */
+setInterval(updateSingleClock,1000);
+setInterval(updateTemperature,900000);
+setInterval(updateAirMood,900000);
 </script>
 </body>
 </html>

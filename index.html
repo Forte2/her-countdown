@@ -187,23 +187,36 @@ input, button {
 </style>
 </head>
 <body class="day">
+
+<!-- Stars background + clouds -->
 <canvas id="stars-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
 <div class="cloud cloud1"></div>
 <div class="cloud cloud2"></div>
 <div class="cloud cloud3"></div>
+
+<!-- 🛸 UFO -->
 <div id="ufo">🛸</div>
+
+<!-- floating Tori head -->
 <div id="head1" class="head">
-  <img src="https://dl.dropboxusercontent.com/scl/fi/at6j5aa64x3t1zw8hgnja/IMG_2568-removebg-preview.png" style="width:60px;">
-</div>
-<div id="head2" class="head">
-  <img src="https://dl.dropboxusercontent.com/scl/fi/7wf3kkx881fi67nfjzll4/IMG_3133-removebg-preview.png" style="width:60px;">
-</div>
-<div class="info-container">
-  <div class="info-box" id="single-clock">Loading time...</div>
-  <div class="info-box" id="airMood" title="Loading AQI...">Loading air mood...</div>
-  <div class="info-box" id="temp">Loading temperature...</div>
+  <img
+    src="https://dl.dropboxusercontent.com/scl/fi/5o04858h6fdqt23amgfwl/IMG_2568-removebg-preview.png?rlkey=2dlf0i5w3cyue27gdias8oqzs&raw=1"
+    width="60" height="60" style="object-fit:contain;">
 </div>
 
+<!-- floating Tyler head -->
+<div id="head2" class="head">
+  <img
+    src="https://dl.dropboxusercontent.com/scl/fi/padr9l1hdyatevnojn5kd/IMG_3133-removebg-preview.png?rlkey=uv8ajo1ijuui4mob0xb4p3oc3&raw=1"
+    width="60" height="60" style="object-fit:contain;">
+</div>
+
+<!-- time / air-quality / temperature boxes -->
+<div class="info-container">
+  <div class="info-box" id="single-clock">Loading time…</div>
+  <div class="info-box" id="airMood"  title="Loading AQI…">Loading air mood…</div>
+  <div class="info-box" id="temp">Loading temperature…</div>
+</div>
 <div id="moon"></div>
 <div id="sun"></div>
 

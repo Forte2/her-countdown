@@ -80,10 +80,11 @@ body.night {
   display: none;
   pointer-events: none;
 }
-#floating-head {
+#floating-heads img {
   position: fixed;
   top: 50%;
   right: -100px;
+  width: 60px;
   z-index: 3;
   display: none;
   pointer-events: none;
@@ -172,12 +173,12 @@ input, button {
   font-size: 1.2rem;
   max-width: 90%;
 }
-@media (max-width:600px){
+@media (max-width: 600px) {
   #moon {
-    top: 30px;
-    right: 30px;
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
+    top: 20px;
+    right: 20px;
   }
 }
 </style>
@@ -189,8 +190,9 @@ input, button {
 <div class="cloud cloud2"></div>
 <div class="cloud cloud3"></div>
 <div id="ufo">🛸</div>
-<div id="floating-head">
-  <img src="https://dl.dropboxusercontent.com/scl/fi/at6j5aa64x3t1zw8hgnja/IMG_2568-removebg-preview.png?rlkey=zsvas936ckb88c1bjhoibzyxj&st=lha93j8q&dl=0" style="width:80px;">
+<div id="floating-heads">
+  <img id="head1" src="https://dl.dropboxusercontent.com/scl/fi/at6j5aa64x3t1zw8hgnja/IMG_2568-removebg-preview.png?rlkey=zsvas936ckb88c1bjhoibzyxj&st=lha93j8q&dl=0">
+  <img id="head2" src="YOUR_SECOND_HEAD_URL_HERE">
 </div>
 
 <h1>You, Me, and This Countdown — A Love Triangle</h1>
@@ -209,7 +211,7 @@ input, button {
 </div>
 
 <video class="gif" autoplay loop muted playsinline>
-  <source src="244188_small.mp4" type="video/mp4"/>
+  <source src="244188_small.mp4" type="video/mp4" />
 </video>
 
 <audio id="bg-music" controls autoplay loop>
@@ -223,11 +225,11 @@ input, button {
 
 <div>
   <label for="secret-code">Enter the name of the place we went on our first date:</label><br>
-  <input type="text" id="secret-code" placeholder="hint: jk, no hints" oninput="checkCode()"/>
-  <img id="hidden-photo" src="IMG_2797.jpeg" alt="Hidden Memory" style="display:none; max-width:80%; margin-top:20px; border-radius:12px;">
+  <input type="text" id="secret-code" placeholder="hint: jk, no hints" oninput="checkCode()" />
+  <img id="hidden-photo" src="IMG_2797.jpeg" alt="Hidden Memory" style="display:none; max-width: 80%; margin-top: 20px; border-radius: 12px;">
 </div>
 
-<div style="margin-top:20px;">
+<div style="margin-top: 20px;">
   <audio controls>
     <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&dl=0" type="audio/mpeg">
   </audio>
@@ -240,8 +242,8 @@ input, button {
   <button onclick="moveLeft()">⬅️</button>
   <button onclick="moveRight()">➡️</button>
 </div>
-<div style="font-size:1.5rem; margin-top:20px;">Score: <span id="scoreDisplay">0</span></div>
-<div style="font-size:1rem; color:#ddd;">Top score: whatever you just got</div>
+<div style="font-size: 1.5rem; margin-top:20px;">Score: <span id="scoreDisplay">0</span></div>
+<div style="font-size: 1rem; color: #ddd;">Top score: whatever you just got</div>
 
 <div id="daily-fact">🐋 Whale Fact: Loading...</div>
 
@@ -267,10 +269,11 @@ function checkCode() {
   photo.style.display = (input === 'scopa') ? 'block' : 'none';
 }
 
-// Clocks without seconds
+// Clocks
 function updateClocks() {
-  const pst = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit' });
-  const est = new Date().toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit' });
+  const options = { hour: '2-digit', minute: '2-digit' };
+  const pst = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles', ...options });
+  const est = new Date().toLocaleTimeString('en-US', { timeZone: 'America/New_York', ...options });
   document.getElementById('pst-clock').textContent = `🕰️ Tyler's Time (PST): ${pst}`;
   document.getElementById('est-clock').textContent = `🕰️ Tori's Time (EST): ${est}`;
 }
@@ -364,28 +367,28 @@ function spawnUFO() {
 }
 setInterval(spawnUFO, 15000);
 
-// Floating Head
-const floatingHead = document.getElementById('floating-head');
-function spawnHead() {
+// Floating Heads
+const head1 = document.getElementById('head1');
+const head2 = document.getElementById('head2');
+function spawnHead(head) {
   if (document.body.classList.contains('night')) {
-    floatingHead.style.display = 'block';
+    head.style.display = 'block';
     let x = window.innerWidth + 100;
-    let y = window.innerHeight / 2;
+    let y = window.innerHeight / 2 + (Math.random() * 100 - 50);
     const move = setInterval(() => {
-      x -= 3;
-      y -= 0.5;
-      floatingHead.style.left = `${x}px`;
-      floatingHead.style.top = `${y}px`;
+      x -= 4;
+      head.style.left = `${x}px`;
+      head.style.top = `${y}px`;
       if (x < -100) {
         clearInterval(move);
-        floatingHead.style.display = 'none';
+        head.style.display = 'none';
       }
     }, 30);
   }
 }
-setInterval(spawnHead, 60000);
+setInterval(() => spawnHead(head1), 45000);
+setInterval(() => spawnHead(head2), 60000);
 
-// Animate Stars
 function animateStars() {
   starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
   if (document.body.classList.contains('night')) {

@@ -80,6 +80,14 @@ body.night {
   display: none;
   pointer-events: none;
 }
+#enterprise {
+  position: fixed;
+  top: 50%;
+  right: -100px;
+  z-index: 3;
+  display: none;
+  pointer-events: none;
+}
 h1 {
   font-size: 2.5rem;
   margin-top: 40px;
@@ -173,6 +181,9 @@ input, button {
 <div class="cloud cloud2"></div>
 <div class="cloud cloud3"></div>
 <div id="ufo">🛸</div>
+<div id="enterprise">
+  <img src="https://dl.dropboxusercontent.com/scl/fi/xiz20zph5oax4u5vr4o3c/pngegg.png?rlkey=6gafw804bku6c201bogwbjc63" style="width:80px;">
+</div>
 
 <h1>You, Me, and This Countdown — A Love Triangle</h1>
 <button class="toggle-btn" onclick="toggleMode()">Toggle Day/Night</button>
@@ -225,7 +236,6 @@ input, button {
 <div style="font-size: 1rem; color: #ddd;">Top score: whatever you just got</div>
 
 <div id="daily-fact">🐋 Whale Fact: Loading...</div>
-
 <script>
 // Countdown
 const countDownDate = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
@@ -320,7 +330,7 @@ for (let i = 0; i < 150; i++) {
   stars.push({ x: Math.random() * starsCanvas.width, y: Math.random() * starsCanvas.height, radius: Math.random() * 1.5, alpha: Math.random(), delta: Math.random() * 0.02 });
 }
 function spawnShootingStar() {
-  shootingStar = { x: Math.random() * starsCanvas.width, y: 0, length: 200, speed: 10, active: true };
+  shootingStar = { x: Math.random() * starsCanvas.width, y: 0, radius: 2, speed: 10, active: true };
 }
 setInterval(() => {
   if (document.body.classList.contains('night') && Math.random() < 0.1 && !shootingStar) spawnShootingStar();
@@ -345,6 +355,27 @@ function spawnUFO() {
 }
 setInterval(spawnUFO, 15000);
 
+// Enterprise
+const enterprise = document.getElementById('enterprise');
+function spawnEnterprise() {
+  if (document.body.classList.contains('night') && Math.random() < 0.05) {
+    enterprise.style.display = 'block';
+    let x = window.innerWidth + 100;
+    let y = window.innerHeight / 2;
+    const move = setInterval(() => {
+      x -= 3;
+      y -= 0.5;
+      enterprise.style.right = `${window.innerWidth - x}px`;
+      enterprise.style.top = `${y}px`;
+      if (x < -100) {
+        clearInterval(move);
+        enterprise.style.display = 'none';
+      }
+    }, 30);
+  }
+}
+setInterval(spawnEnterprise, 30000);
+
 function animateStars() {
   starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
   if (document.body.classList.contains('night')) {
@@ -357,16 +388,13 @@ function animateStars() {
       starsCtx.fill();
     });
     if (shootingStar && shootingStar.active) {
-  // Draw a bright moving dot
-  starsCtx.beginPath();
-  starsCtx.arc(shootingStar.x, shootingStar.y, 3, 0, Math.PI * 2);
-  starsCtx.fillStyle = 'white';
-  starsCtx.fill();
-
-  shootingStar.x += shootingStar.speed;
-  shootingStar.y += shootingStar.speed;
-  if (shootingStar.y > starsCanvas.height) shootingStar = null;
-}
+      starsCtx.beginPath();
+      starsCtx.arc(shootingStar.x, shootingStar.y, shootingStar.radius, 0, Math.PI * 2);
+      starsCtx.fillStyle = 'white';
+      starsCtx.fill();
+      shootingStar.x += shootingStar.speed;
+      shootingStar.y += shootingStar.speed;
+      if (shootingStar.y > starsCanvas.height) shootingStar = null;
     }
   }
   requestAnimationFrame(animateStars);

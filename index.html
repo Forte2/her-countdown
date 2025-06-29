@@ -71,20 +71,10 @@ body.night {
   z-index: 2;
   opacity: 0.7;
 }
-#ufo {
-  position: fixed;
-  top: 120px;
-  left: -50px;
-  font-size: 2rem;
-  z-index: 3;
-  display: none;
-  pointer-events: none;
-}
-#floating-heads img {
+#ufo, #head1, #head2 {
   position: fixed;
   top: 50%;
   right: -100px;
-  width: 60px;
   z-index: 3;
   display: none;
   pointer-events: none;
@@ -173,14 +163,6 @@ input, button {
   font-size: 1.2rem;
   max-width: 90%;
 }
-@media (max-width: 600px) {
-  #moon {
-    width: 60px;
-    height: 60px;
-    top: 20px;
-    right: 20px;
-  }
-}
 </style>
 </head>
 <body class="day">
@@ -190,9 +172,11 @@ input, button {
 <div class="cloud cloud2"></div>
 <div class="cloud cloud3"></div>
 <div id="ufo">🛸</div>
-<div id="floating-heads">
-  <img id="head1" src="https://dl.dropboxusercontent.com/scl/fi/at6j5aa64x3t1zw8hgnja/IMG_2568-removebg-preview.png?rlkey=zsvas936ckb88c1bjhoibzyxj&st=lha93j8q&dl=0">
-  <img id="head2" src="YOUR_SECOND_HEAD_URL_HERE">
+<div id="head1">
+  <img src="https://dl.dropboxusercontent.com/scl/fi/at6j5aa64x3t1zw8hgnja/IMG_2568-removebg-preview.png?rlkey=zsvas936ckb88c1bjhoibzyxj&st=e4expuk0" style="width:80px;">
+</div>
+<div id="head2">
+  <img src="https://dl.dropboxusercontent.com/scl/fi/7wf3kkx881fi67nfjzll4/IMG_3133-removebg-preview.png?rlkey=5zhov8wgzx0lv0ip5ecmt46fc&st=tqh9mixq" style="width:80px;">
 </div>
 
 <h1>You, Me, and This Countdown — A Love Triangle</h1>
@@ -271,9 +255,8 @@ function checkCode() {
 
 // Clocks
 function updateClocks() {
-  const options = { hour: '2-digit', minute: '2-digit' };
-  const pst = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles', ...options });
-  const est = new Date().toLocaleTimeString('en-US', { timeZone: 'America/New_York', ...options });
+  const pst = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit' });
+  const est = new Date().toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit' });
   document.getElementById('pst-clock').textContent = `🕰️ Tyler's Time (PST): ${pst}`;
   document.getElementById('est-clock').textContent = `🕰️ Tori's Time (EST): ${est}`;
 }
@@ -368,27 +351,25 @@ function spawnUFO() {
 setInterval(spawnUFO, 15000);
 
 // Floating Heads
-const head1 = document.getElementById('head1');
-const head2 = document.getElementById('head2');
-function spawnHead(head) {
-  if (document.body.classList.contains('night')) {
-    head.style.display = 'block';
-    let x = window.innerWidth + 100;
-    let y = window.innerHeight / 2 + (Math.random() * 100 - 50);
-    const move = setInterval(() => {
-      x -= 4;
-      head.style.left = `${x}px`;
-      head.style.top = `${y}px`;
-      if (x < -100) {
-        clearInterval(move);
-        head.style.display = 'none';
-      }
-    }, 30);
-  }
+function spawnHead(id) {
+  const head = document.getElementById(id);
+  head.style.display = 'block';
+  let x = window.innerWidth + 100;
+  let y = Math.random() * (window.innerHeight / 2);
+  const move = setInterval(() => {
+    x -= 2.5; // Faster movement
+    head.style.left = `${x}px`;
+    head.style.top = `${y}px`;
+    if (x < -100) {
+      clearInterval(move);
+      head.style.display = 'none';
+    }
+  }, 30);
 }
-setInterval(() => spawnHead(head1), 45000);
-setInterval(() => spawnHead(head2), 60000);
+setInterval(() => { if (document.body.classList.contains('night')) spawnHead('head1'); }, 45000);
+setInterval(() => { if (document.body.classList.contains('night')) spawnHead('head2'); }, 45000);
 
+// Star Animation
 function animateStars() {
   starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
   if (document.body.classList.contains('night')) {

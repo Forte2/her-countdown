@@ -421,8 +421,9 @@ function spawnHead(head) {
     }, 30);
   }
 }
-setInterval(() => spawnHead(head1), 120000);
-setInterval(() => spawnHead(head2), 160000);
+// testing – 5 s and 7 s instead of 2 min / 2 min 40 s
+setInterval(() => spawnHead(head1), 5000);   // 5 000 ms  = 5 s
+setInterval(() => spawnHead(head2), 7000);   // 7 000 ms  = 7 s
 
 // Clock
 function updateSingleClock() {

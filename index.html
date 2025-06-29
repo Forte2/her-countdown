@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,15 +90,13 @@ body.night {
   animation:floatClouds 45s linear infinite; /* drift across like clouds */
   pointer-events:none;
 }
-/* floating heads */
-.head{
-  position:absolute;
-  top:50%;
-  left:calc(100vw + 120px);   /* start just off-screen right */
-  /* right:-100px;            <-- remove this old line */
-  z-index:3;
-  display:none;
-  pointer-events:none;
+.head {
+  position: absolute;
+  top: 50%;
+  right: -100px;
+  z-index: 3;
+  display: none;
+  pointer-events: none;
 }
 h1 {
   font-size: 2.5rem;
@@ -424,37 +423,28 @@ const head1 = document.getElementById('head1');
 const head2 = document.getElementById('head2');
 
 function spawnHead(el) {
-  // Skip if it’s already cruising or if it’s daytime
+  // don’t relaunch if this head is still on screen or it’s daytime
   if (el.style.display === 'block' || !document.body.classList.contains('night')) return;
 
   el.style.display = 'block';
-  el.style.right = '';                     // clear any old “right:” value
-  let x = window.innerWidth + 120;         // start just off-screen right
+  let x = window.innerWidth + 120;                       // start just off-screen right
   let y = window.innerHeight / 2 + (Math.random() * 60 - 30);
 
-  const SPEED = 2.5;   // px per frame
-  const FRAME = 30;    // ms per frame
+  const SPEED = 2.5;  // px per frame
+  const FRAME = 30;   // ms per frame
 
   const mover = setInterval(() => {
     x -= SPEED;
-    y -= 0.2;                      // tiny upward drift
+    y -= 0.2;
     el.style.left = x + 'px';
     el.style.top  = y + 'px';
 
-    if (x < -120) {               // once fully past the left edge
+    if (x < -120) {                   // once fully past the left edge
       clearInterval(mover);
-      el.style.display = 'none';  // hide until next spawn
+      el.style.display = 'none';
     }
   }, FRAME);
 }
-
-/* ---- spawn intervals (based on travel time) ---- */
-const travelTime = ((window.innerWidth + 240) / (SPEED / (FRAME / 1000))) * 1000; // ms for full pass
-const interval1  = Math.round(travelTime + 2000);          // head1 every full pass + 2 s
-const interval2  = Math.round(travelTime * 1.3 + 2000);    // head2 a bit later
-
-setInterval(() => spawnHead(head1), interval1);
-setInterval(() => spawnHead(head2), interval2);
 
 /* ---------- Floating heads timing ---------- */
 const SPEED = 2.5;   // px per frame  (leave as-is)

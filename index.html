@@ -71,19 +71,19 @@ body.night {
   z-index: 2;
   opacity: 0.7;
 }
-@media (max-width: 600px) {
-  #moon {
-    top: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-  }
-}
 #ufo {
   position: fixed;
   top: 120px;
   left: -50px;
   font-size: 2rem;
+  z-index: 3;
+  display: none;
+  pointer-events: none;
+}
+#floating-head {
+  position: fixed;
+  top: 50%;
+  right: -100px;
   z-index: 3;
   display: none;
   pointer-events: none;
@@ -172,6 +172,14 @@ input, button {
   font-size: 1.2rem;
   max-width: 90%;
 }
+@media (max-width:600px){
+  #moon {
+    top: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+  }
+}
 </style>
 </head>
 <body class="day">
@@ -181,13 +189,16 @@ input, button {
 <div class="cloud cloud2"></div>
 <div class="cloud cloud3"></div>
 <div id="ufo">🛸</div>
+<div id="floating-head">
+  <img src="https://dl.dropboxusercontent.com/scl/fi/at6j5aa64x3t1zw8hgnja/IMG_2568-removebg-preview.png?rlkey=zsvas936ckb88c1bjhoibzyxj&st=lha93j8q&dl=0" style="width:80px;">
+</div>
 
 <h1>You, Me, and This Countdown — A Love Triangle</h1>
 <button class="toggle-btn" onclick="toggleMode()">Toggle Day/Night</button>
 
 <div class="clock-container">
-  <div class="clock" id="pst-clock">🕰️ Tyler's Time (PST): --:--:--</div>
-  <div class="clock" id="est-clock">🕰️ Tori's Time (EST): --:--:--</div>
+  <div class="clock" id="pst-clock">🕰️ Tyler's Time (PST): --:--</div>
+  <div class="clock" id="est-clock">🕰️ Tori's Time (EST): --:--</div>
 </div>
 
 <div id="countdown">
@@ -198,7 +209,7 @@ input, button {
 </div>
 
 <video class="gif" autoplay loop muted playsinline>
-  <source src="244188_small.mp4" type="video/mp4" />
+  <source src="244188_small.mp4" type="video/mp4"/>
 </video>
 
 <audio id="bg-music" controls autoplay loop>
@@ -212,11 +223,11 @@ input, button {
 
 <div>
   <label for="secret-code">Enter the name of the place we went on our first date:</label><br>
-  <input type="text" id="secret-code" placeholder="hint: jk, no hints" oninput="checkCode()" />
-  <img id="hidden-photo" src="IMG_2797.jpeg" alt="Hidden Memory" style="display:none; max-width: 80%; margin-top: 20px; border-radius: 12px;">
+  <input type="text" id="secret-code" placeholder="hint: jk, no hints" oninput="checkCode()"/>
+  <img id="hidden-photo" src="IMG_2797.jpeg" alt="Hidden Memory" style="display:none; max-width:80%; margin-top:20px; border-radius:12px;">
 </div>
 
-<div style="margin-top: 20px;">
+<div style="margin-top:20px;">
   <audio controls>
     <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&dl=0" type="audio/mpeg">
   </audio>
@@ -229,8 +240,8 @@ input, button {
   <button onclick="moveLeft()">⬅️</button>
   <button onclick="moveRight()">➡️</button>
 </div>
-<div style="font-size: 1.5rem; margin-top:20px;">Score: <span id="scoreDisplay">0</span></div>
-<div style="font-size: 1rem; color: #ddd;">Top score: whatever you just got</div>
+<div style="font-size:1.5rem; margin-top:20px;">Score: <span id="scoreDisplay">0</span></div>
+<div style="font-size:1rem; color:#ddd;">Top score: whatever you just got</div>
 
 <div id="daily-fact">🐋 Whale Fact: Loading...</div>
 
@@ -246,22 +257,20 @@ setInterval(() => {
   document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
 }, 1000);
 
-// Music Controls
 function pauseMusic() { document.getElementById('bg-music').pause(); }
 function playMusic() { document.getElementById('bg-music').play(); }
 function toggleMode() { document.body.classList.toggle("night"); }
 
-// Secret Code
 function checkCode() {
   const input = document.getElementById('secret-code').value.trim().toLowerCase();
   const photo = document.getElementById('hidden-photo');
   photo.style.display = (input === 'scopa') ? 'block' : 'none';
 }
 
-// Clocks
+// Clocks without seconds
 function updateClocks() {
-  const pst = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles' });
-  const est = new Date().toLocaleTimeString('en-US', { timeZone: 'America/New_York' });
+  const pst = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit' });
+  const est = new Date().toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit' });
   document.getElementById('pst-clock').textContent = `🕰️ Tyler's Time (PST): ${pst}`;
   document.getElementById('est-clock').textContent = `🕰️ Tori's Time (EST): ${est}`;
 }
@@ -327,22 +336,10 @@ function resizeStars() {
 }
 window.addEventListener('resize', resizeStars); resizeStars();
 for (let i = 0; i < 150; i++) {
-  stars.push({
-    x: Math.random() * starsCanvas.width,
-    y: Math.random() * starsCanvas.height,
-    radius: Math.random() * 1.5,
-    alpha: Math.random(),
-    delta: Math.random() * 0.02
-  });
+  stars.push({ x: Math.random() * starsCanvas.width, y: Math.random() * starsCanvas.height, radius: Math.random() * 1.5, alpha: Math.random(), delta: Math.random() * 0.02 });
 }
 function spawnShootingStar() {
-  shootingStar = {
-    x: Math.random() * starsCanvas.width,
-    y: 0,
-    radius: 2,
-    speed: 10,
-    active: true
-  };
+  shootingStar = { x: Math.random() * starsCanvas.width, y: 0, radius: 2, speed: 10, active: true };
 }
 setInterval(() => {
   if (document.body.classList.contains('night') && Math.random() < 0.1 && !shootingStar) spawnShootingStar();
@@ -367,6 +364,28 @@ function spawnUFO() {
 }
 setInterval(spawnUFO, 15000);
 
+// Floating Head
+const floatingHead = document.getElementById('floating-head');
+function spawnHead() {
+  if (document.body.classList.contains('night')) {
+    floatingHead.style.display = 'block';
+    let x = window.innerWidth + 100;
+    let y = window.innerHeight / 2;
+    const move = setInterval(() => {
+      x -= 3;
+      y -= 0.5;
+      floatingHead.style.left = `${x}px`;
+      floatingHead.style.top = `${y}px`;
+      if (x < -100) {
+        clearInterval(move);
+        floatingHead.style.display = 'none';
+      }
+    }, 30);
+  }
+}
+setInterval(spawnHead, 60000);
+
+// Animate Stars
 function animateStars() {
   starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
   if (document.body.classList.contains('night')) {

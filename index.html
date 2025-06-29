@@ -6,6 +6,7 @@
 <title>Countdown to You</title>
 <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet"/>
 <style>
+<style>
 html, body {
   margin: 0;
   padding: 0;
@@ -30,20 +31,19 @@ body.night {
   cursor: pointer;
   font-family: 'Luckiest Guy', cursive;
 }
-.info-container {
+.clock-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 500px;
-  margin: 0 auto;
   flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px;
 }
-.info-box {
+.clock-box, .temp-box {
   background: rgba(0,0,0,0.3);
   padding: 5px 10px;
   border-radius: 8px;
   font-size: 1rem;
-  margin: 5px;
 }
 @keyframes floatClouds {
   0% { transform: translateX(0); }
@@ -75,8 +75,7 @@ body.night {
   background: radial-gradient(circle, #fff 40%, #ccc 70%, transparent 100%);
 }
 #sun {
-  background: radial-gradient(circle, #ffff66 40%, #ffcc00 70%, transparent 100%);
-  display: none;
+  background: radial-gradient(circle, #ffecb3 40%, #ffd54f 70%, transparent 100%);
 }
 #ufo {
   position: absolute;
@@ -97,7 +96,7 @@ body.night {
 }
 h1 {
   font-size: 2.5rem;
-  margin-top: 40px;
+  margin-top: 60px;
 }
 #countdown {
   display: flex;
@@ -115,10 +114,7 @@ h1 {
   width: 100px;
   color: #333;
 }
-.label {
-  font-size: 1rem;
-  margin-top: 5px;
-}
+.label { font-size: 1rem; margin-top: 5px; }
 .gif {
   margin-top: 30px;
   border-radius: 12px;
@@ -127,12 +123,7 @@ h1 {
 audio {
   display: block;
   margin: 20px auto;
-}
-audio::-webkit-media-controls-panel {
-  background-color: rgba(0,0,0,0.4);
-}
-audio::-webkit-media-controls-play-button {
-  filter: invert(1);
+  border-radius: 8px;
 }
 .whale-buttons {
   display: flex;
@@ -184,19 +175,13 @@ input, button {
   max-width: 90%;
 }
 @media (max-width: 600px) {
-  #moon, #sun {
-    width: 60px;
-    height: 60px;
-    top: 10px;
-    right: 10px;
-  }
-  h1 {
-    margin-top: 90px;
-    font-size: 1.8rem;
-  }
-  .info-container {
+  .clock-container {
     flex-direction: column;
     align-items: center;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-top: 80px;
   }
 }
 </style>

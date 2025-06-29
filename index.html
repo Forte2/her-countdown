@@ -207,8 +207,8 @@ function spawnHead(el){
     if(x<-100){clearInterval(id);el.style.display="none";}
   },30);
 }
-setInterval(()=>spawnHead($("head1")),120000); // 2 min
-setInterval(()=>spawnHead($("head2")),160000); // 2 min 40 s
+setInterval(setInterval(() => spawnHead($("head1")), 5000);  // 5 s
+setInterval(() => spawnHead($("head2")), 5000);  // 5 s
 
 /* ---------- CLOCK ---------- */
 function updateClock(){

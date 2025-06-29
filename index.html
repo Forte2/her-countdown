@@ -43,7 +43,7 @@ body.night {
   padding: 5px 10px;
   border-radius: 8px;
   font-size: 1rem;
-  transition: background-color 0.5s;
+  transition: background 1s ease;
 }
 @keyframes floatClouds {
   0% { transform: translateX(0); }
@@ -235,13 +235,12 @@ input, button {
   <img id="hidden-photo" src="IMG_2797.jpeg" alt="Hidden Memory" style="display:none; max-width: 80%; margin-top: 20px; border-radius: 12px;">
 </div>
 
+<!-- VOICE NOTE ABOVE GAME -->
 <div style="margin-top: 20px;">
   <audio controls>
-    <source src="https://dl.dropboxusercontent.com/scl/fi/gqm7x0nqkv73l89wgil01/Singing-whales.mp3?rlkey=57v52ln03b09714f1cmzq813i&dl=1" type="audio/mpeg">
+    <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&dl=0" type="audio/mpeg">
   </audio>
 </div>
-
-<div class="tiny">Hear what the whale has to say 🐋</div>
 
 <canvas id="gameCanvas" class="game-canvas" width="400" height="500"></canvas>
 <div class="arrow-buttons">
@@ -253,6 +252,15 @@ input, button {
 
 <div id="daily-fact">🐋 Whale Fact: Loading...</div>
 
+<!-- WHALE NOISE BELOW FACT -->
+<div style="margin-top: 20px;">
+  <audio controls>
+    <source src="https://dl.dropboxusercontent.com/scl/fi/gqm7x0nqkv73l89wgil01/Singing-whales.mp3?rlkey=57v52ln03b09714f1cmzq813i&dl=0" type="audio/mpeg">
+  </audio>
+</div>
+<div class="tiny">🔊 Hear what the whale has to say about Israel</div>
+
+<!-- ✅ ✅ ✅ PASTE YOUR <script> CONTENT HERE, before </body> -->
 <script>
 // Countdown
 const countDownDate = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
@@ -339,9 +347,79 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowRight") moveRight();
 });
 updateGame();
-</script>
 
-<script>
+// Stars
+const starsCanvas = document.getElementById('stars-canvas'), starsCtx = starsCanvas.getContext('2d');
+let stars = [], shootingStar = null;
+function resizeStars() {
+  starsCanvas.width = window.innerWidth;
+  starsCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeStars);
+resizeStars();
+for (let i = 0; i < 150; i++) {
+  stars.push({
+    x: Math.random() * starsCanvas.width,
+    y: Math.random() * starsCanvas.height,
+    radius: Math.random() * 1.5,
+    alpha: Math.random(),
+    delta: Math.random() * 0.02
+  });
+}
+function spawnShootingStar() {
+  shootingStar = { x: Math.random() * starsCanvas.width, y: 0, radius: 2, speed: 10, active: true };
+}
+setInterval(() => {
+  if (document.body.classList.contains('night') && Math.random() < 0.1 && !shootingStar) spawnShootingStar();
+}, 1000);
+function animateStars() {
+  starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+  if (document.body.classList.contains('night')) {
+    stars.forEach(s => {
+      s.alpha += s.delta;
+      if (s.alpha <= 0 || s.alpha >= 1) s.delta = -s.delta;
+      starsCtx.beginPath();
+      starsCtx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+      starsCtx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+      starsCtx.fill();
+    });
+    if (shootingStar && shootingStar.active) {
+      starsCtx.beginPath();
+      starsCtx.arc(shootingStar.x, shootingStar.y, shootingStar.radius, 0, Math.PI * 2);
+      starsCtx.fillStyle = 'white';
+      starsCtx.fill();
+      shootingStar.x += shootingStar.speed;
+      shootingStar.y += shootingStar.speed;
+      if (shootingStar.y > starsCanvas.height) shootingStar = null;
+    }
+  }
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+
+// Floating Heads
+const head1 = document.getElementById('head1');
+const head2 = document.getElementById('head2');
+function spawnHead(head) {
+  if (document.body.classList.contains('night')) {
+    head.style.display = 'block';
+    let x = window.innerWidth + 100;
+    let y = window.innerHeight / 2 + (Math.random() * 50 - 25);
+    const move = setInterval(() => {
+      x -= 2.5;
+      y -= 0.2;
+      head.style.left = `${x}px`;
+      head.style.top = `${y}px`;
+      if (x < -100) {
+        clearInterval(move);
+        head.style.display = 'none';
+      }
+    }, 30);
+  }
+}
+setInterval(() => spawnHead(head1), 120000);
+setInterval(() => spawnHead(head2), 160000);
+
 // Clock
 function updateSingleClock() {
   const isNight = document.body.classList.contains("night");
@@ -353,16 +431,7 @@ function updateSingleClock() {
 setInterval(updateSingleClock, 1000);
 updateSingleClock();
 
-// Temperature + AQI Mood
-const moods = [
-  "✨ Air’s basically filtered, reverse osmosis vibes.",
-  "🫧 Kinda clean, ngl.",
-  "😗✌️ Meh. Kinda mid.",
-  "🫠 Low-key crusty out here.",
-  "😮‍💨 The air is literally buns af.",
-  "☠️ Babe don’t breathe this."
-];
-
+// Temperature and Air Mood
 async function updateTemperature() {
   const apiKey = "113bf4b240cd4c9a81e42115252906";
   const tempDiv = document.getElementById("temp");
@@ -380,6 +449,14 @@ async function updateTemperature() {
 updateTemperature();
 setInterval(updateTemperature, 900000);
 
+const moods = [
+  "✨ Air’s basically filtered, reverse osmosis vibes.",
+  "🫧 Kinda clean, ngl.",
+  "😗✌️ Meh. Kinda mid.",
+  "🫠 Low-key crusty out here.",
+  "😮‍💨 The air is literally buns af.",
+  "☠️ Babe don’t breathe this."
+];
 async function updateAirMood() {
   const apiKey = "113bf4b240cd4c9a81e42115252906";
   const airDiv = document.getElementById("airMood");
@@ -392,24 +469,14 @@ async function updateAirMood() {
     const mood = moods[index - 1] || "🤷‍♂️ Air status unknown.";
     airDiv.textContent = `Air Mood: ${mood}`;
     airDiv.title = `AQI index: ${index}`;
-    airDiv.style.backgroundColor = `rgba(${index * 40},0,0,0.4)`;
-    localStorage.setItem("lastAQI", index);
+    airDiv.style.background = index >= 4 ? "rgba(255,0,0,0.4)" : "rgba(0,0,0,0.3)";
   } catch {
     airDiv.textContent = "Air Mood: unavailable.";
   }
 }
 updateAirMood();
 setInterval(updateAirMood, 900000);
-
-// Load last AQI
-const storedAQI = localStorage.getItem("lastAQI");
-if (storedAQI) {
-  const mood = moods[storedAQI - 1] || "🤷‍♂️ Air status unknown.";
-  const airDiv = document.getElementById("airMood");
-  airDiv.textContent = `Air Mood: ${mood}`;
-  airDiv.title = `AQI index: ${storedAQI}`;
-  airDiv.style.backgroundColor = `rgba(${storedAQI * 40},0,0,0.4)`;
-}
 </script>
+
 </body>
 </html>

@@ -47,7 +47,7 @@ body.night {
   100% { transform: translateX(150vw); }
 }
 .cloud {
-  position: absolute;
+  position: fixed;
   background: #fff;
   border-radius: 50%;
   box-shadow: -60px 20px #fff, -30px 10px #fff, 0 0 #fff, 30px 10px #fff, 60px 20px #fff;
@@ -71,19 +71,19 @@ body.night {
   z-index: 2;
   opacity: 0.7;
 }
+@media (max-width: 600px) {
+  #moon {
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+  }
+}
 #ufo {
   position: fixed;
   top: 120px;
   left: -50px;
   font-size: 2rem;
-  z-index: 3;
-  display: none;
-  pointer-events: none;
-}
-#enterprise {
-  position: fixed;
-  top: 50%;
-  right: -100px;
   z-index: 3;
   display: none;
   pointer-events: none;
@@ -181,9 +181,6 @@ input, button {
 <div class="cloud cloud2"></div>
 <div class="cloud cloud3"></div>
 <div id="ufo">🛸</div>
-<div id="enterprise">
-  <img src="https://dl.dropboxusercontent.com/scl/fi/xiz20zph5oax4u5vr4o3c/pngegg.png?rlkey=6gafw804bku6c201bogwbjc63" style="width:80px;">
-</div>
 
 <h1>You, Me, and This Countdown — A Love Triangle</h1>
 <button class="toggle-btn" onclick="toggleMode()">Toggle Day/Night</button>
@@ -249,10 +246,12 @@ setInterval(() => {
   document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
 }, 1000);
 
+// Music Controls
 function pauseMusic() { document.getElementById('bg-music').pause(); }
 function playMusic() { document.getElementById('bg-music').play(); }
 function toggleMode() { document.body.classList.toggle("night"); }
 
+// Secret Code
 function checkCode() {
   const input = document.getElementById('secret-code').value.trim().toLowerCase();
   const photo = document.getElementById('hidden-photo');
@@ -328,10 +327,22 @@ function resizeStars() {
 }
 window.addEventListener('resize', resizeStars); resizeStars();
 for (let i = 0; i < 150; i++) {
-  stars.push({ x: Math.random() * starsCanvas.width, y: Math.random() * starsCanvas.height, radius: Math.random() * 1.5, alpha: Math.random(), delta: Math.random() * 0.02 });
+  stars.push({
+    x: Math.random() * starsCanvas.width,
+    y: Math.random() * starsCanvas.height,
+    radius: Math.random() * 1.5,
+    alpha: Math.random(),
+    delta: Math.random() * 0.02
+  });
 }
 function spawnShootingStar() {
-  shootingStar = { x: Math.random() * starsCanvas.width, y: 0, radius: 2, speed: 10, active: true };
+  shootingStar = {
+    x: Math.random() * starsCanvas.width,
+    y: 0,
+    radius: 2,
+    speed: 10,
+    active: true
+  };
 }
 setInterval(() => {
   if (document.body.classList.contains('night') && Math.random() < 0.1 && !shootingStar) spawnShootingStar();
@@ -355,27 +366,6 @@ function spawnUFO() {
   }
 }
 setInterval(spawnUFO, 15000);
-
-// Heads flying across
-function spawnHeads() {
-  if (document.body.classList.contains('night')) {
-    const heads = document.getElementById('headPair');
-    heads.style.display = 'block';
-    let x = window.innerWidth + 200;
-    let y = window.innerHeight / 2;
-    const move = setInterval(() => {
-      x -= 2;
-      y -= 0.3;
-      heads.style.right = `${window.innerWidth - x}px`;
-      heads.style.top = `${y}px`;
-      if (x < -200) {
-        clearInterval(move);
-        heads.style.display = 'none';
-      }
-    }, 30);
-  }
-}
-setInterval(spawnHeads, 60000);
 
 function animateStars() {
   starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);

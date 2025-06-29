@@ -77,6 +77,22 @@ body.night {
 #sun {
   background: radial-gradient(circle, #ffecb3 40%, #ffd54f 70%, transparent 100%);
 }
+/* Move sun/moon on mobile */
+@media (max-width: 600px) {
+  #moon, #sun {
+    top: auto;
+    bottom: 20px;
+    right: 20px;
+  }
+  .info-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-top: 120px;
+  }
+}
 #ufo {
   position: absolute;
   top: 120px;
@@ -174,16 +190,6 @@ input, button {
   font-size: 1.2rem;
   max-width: 90%;
 }
-@media (max-width: 600px) {
-  .info-container {
-    flex-direction: column;
-    align-items: center;
-  }
-  h1 {
-    font-size: 2rem;
-    margin-top: 120px;
-  }
-}
 </style>
 </head>
 <body class="day">
@@ -205,7 +211,6 @@ input, button {
   <div class="info-box" id="airMood" title="Loading AQI...">Loading air mood...</div>
   <div class="info-box" id="temp">Loading temperature...</div>
 </div>
-
 <h1 title="hi tori 👀">You, Me, and This Countdown — A Love Triangle</h1>
 <button class="toggle-btn" onclick="toggleMode()">Toggle Day/Night</button>
 
@@ -260,7 +265,6 @@ input, button {
 </div>
 <div class="tiny" style="cursor:pointer;" onclick="playWhaleSound()">🔊 Hear what the whale has to say about Israel</div>
 
-<!-- ✅ ✅ ✅ PASTE YOUR <script> CONTENT HERE, before </body> -->
 <script>
 // Countdown
 const countDownDate = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
@@ -292,6 +296,13 @@ function checkCode() {
   const input = document.getElementById('secret-code').value.trim().toLowerCase();
   const photo = document.getElementById('hidden-photo');
   photo.style.display = (input === 'scopa') ? 'block' : 'none';
+}
+
+// Play Whale Sound
+function playWhaleSound() {
+  const whaleAudio = document.getElementById('whale-sound');
+  whaleAudio.currentTime = 0;
+  whaleAudio.play();
 }
 
 // Whale Facts
@@ -396,93 +407,6 @@ function animateStars() {
   requestAnimationFrame(animateStars);
 }
 animateStars();
-
-//Play Whale Sound
-function playWhaleSound() {
-  const whaleAudio = document.getElementById('whale-sound');
-  whaleAudio.currentTime = 0;
-  whaleAudio.play();
-}
-// Floating Heads
-const head1 = document.getElementById('head1');
-const head2 = document.getElementById('head2');
-function spawnHead(head) {
-  if (document.body.classList.contains('night')) {
-    head.style.display = 'block';
-    let x = window.innerWidth + 100;
-    let y = window.innerHeight / 2 + (Math.random() * 50 - 25);
-    const move = setInterval(() => {
-      x -= 2.5;
-      y -= 0.2;
-      head.style.left = `${x}px`;
-      head.style.top = `${y}px`;
-      if (x < -100) {
-        clearInterval(move);
-        head.style.display = 'none';
-      }
-    }, 30);
-  }
-}
-setInterval(() => spawnHead(head1), 120000);
-setInterval(() => spawnHead(head2), 160000);
-
-// Clock
-function updateSingleClock() {
-  const isNight = document.body.classList.contains("night");
-  const tz = isNight ? "America/New_York" : "America/Los_Angeles";
-  const label = isNight ? "Your Time" : "Tyler's Time";
-  const time = new Date().toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit' });
-  document.getElementById("single-clock").textContent = `${label}: ${time}`;
-}
-setInterval(updateSingleClock, 1000);
-updateSingleClock();
-
-// Temperature and Air Mood
-async function updateTemperature() {
-  const apiKey = "113bf4b240cd4c9a81e42115252906";
-  const tempDiv = document.getElementById("temp");
-  try {
-    const isNight = document.body.classList.contains("night");
-    const coords = isNight ? "40.7033,-74.0110" : "34.0122,-118.4279";
-    const label = isNight ? "Your temperature" : "Tyler's temperature";
-    const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${coords}`);
-    const data = await response.json();
-    tempDiv.textContent = `${label}: ${data.current.temp_f}°F`;
-  } catch {
-    tempDiv.textContent = "Temperature unavailable.";
-  }
-}
-updateTemperature();
-setInterval(updateTemperature, 900000);
-
-const moods = [
-  "✨ Air’s basically filtered, reverse osmosis vibes.",
-  "🫧 Kinda clean, ngl.",
-  "😗✌️ Meh. Kinda mid.",
-  "🫠 Low-key crusty out here.",
-  "😮‍💨 The air is literally buns af.",
-  "☠️ Babe don’t breathe this."
-];
-async function updateAirMood() {
-  const apiKey = "113bf4b240cd4c9a81e42115252906";
-  const airDiv = document.getElementById("airMood");
-  try {
-    const isNight = document.body.classList.contains("night");
-    const coords = isNight ? "40.7033,-74.0110" : "34.0122,-118.4279";
-    const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${coords}&aqi=yes`);
-    const data = await response.json();
-    const index = data.current.air_quality["us-epa-index"];
-    const mood = moods[index - 1] || "🤷‍♂️ Air status unknown.";
-    airDiv.textContent = `Air Mood: ${mood}`;
-    airDiv.title = `AQI index: ${index}`;
-    airDiv.style.background = index >= 4 ? "rgba(255,0,0,0.4)" : "rgba(0,0,0,0.3)";
-  } catch {
-    airDiv.textContent = "Air Mood: unavailable.";
-  }
-}
-updateAirMood();
-setInterval(updateAirMood, 900000);
 </script>
-
 </body>
 </html>

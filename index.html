@@ -60,7 +60,7 @@ body.night {
 .cloud2 { width: 180px; height: 70px; top: 100px; left: -300px; animation-delay: 10s; }
 .cloud3 { width: 220px; height: 80px; top: 180px; left: -350px; animation-delay: 20s; }
 #moon {
-  position: absolute;
+  position: fixed;
   top: 80px;
   right: 80px;
   width: 100px;
@@ -73,11 +73,18 @@ body.night {
 }
 #ufo, #head1, #head2 {
   position: fixed;
-  top: 50%;
-  right: -100px;
   z-index: 3;
   display: none;
   pointer-events: none;
+}
+#ufo {
+  top: 120px;
+  left: -50px;
+  font-size: 2rem;
+}
+#head1, #head2 {
+  top: 50%;
+  right: -100px;
 }
 h1 {
   font-size: 2.5rem;
@@ -206,19 +213,6 @@ input, button {
   <button onclick="pauseMusic()" class="whale-button">🐋</button>
   <button onclick="playMusic()" class="whale-button">🐳</button>
 </div>
-
-<div>
-  <label for="secret-code">Enter the name of the place we went on our first date:</label><br>
-  <input type="text" id="secret-code" placeholder="hint: jk, no hints" oninput="checkCode()" />
-  <img id="hidden-photo" src="IMG_2797.jpeg" alt="Hidden Memory" style="display:none; max-width: 80%; margin-top: 20px; border-radius: 12px;">
-</div>
-
-<div style="margin-top: 20px;">
-  <audio controls>
-    <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&dl=0" type="audio/mpeg">
-  </audio>
-</div>
-
 <div class="tiny">Not tired of my voice yet? Click above.</div>
 
 <canvas id="gameCanvas" class="game-canvas" width="400" height="500"></canvas>
@@ -247,13 +241,7 @@ function pauseMusic() { document.getElementById('bg-music').pause(); }
 function playMusic() { document.getElementById('bg-music').play(); }
 function toggleMode() { document.body.classList.toggle("night"); }
 
-function checkCode() {
-  const input = document.getElementById('secret-code').value.trim().toLowerCase();
-  const photo = document.getElementById('hidden-photo');
-  photo.style.display = (input === 'scopa') ? 'block' : 'none';
-}
-
-// Clocks
+// Clocks without seconds
 function updateClocks() {
   const pst = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit' });
   const est = new Date().toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit' });
@@ -351,25 +339,29 @@ function spawnUFO() {
 setInterval(spawnUFO, 15000);
 
 // Floating Heads
-function spawnHead(id) {
-  const head = document.getElementById(id);
-  head.style.display = 'block';
-  let x = window.innerWidth + 100;
-  let y = Math.random() * (window.innerHeight / 2);
-  const move = setInterval(() => {
-    x -= 2.5; // Faster movement
-    head.style.left = `${x}px`;
-    head.style.top = `${y}px`;
-    if (x < -100) {
-      clearInterval(move);
-      head.style.display = 'none';
+const head1 = document.getElementById('head1');
+const head2 = document.getElementById('head2');
+function spawnHead(element, interval) {
+  setInterval(() => {
+    if (document.body.classList.contains('night')) {
+      element.style.display = 'block';
+      let x = window.innerWidth + 100;
+      let y = Math.random() * (window.innerHeight - 100);
+      const move = setInterval(() => {
+        x -= 4;
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
+        if (x < -100) {
+          clearInterval(move);
+          element.style.display = 'none';
+        }
+      }, 30);
     }
-  }, 30);
+  }, interval);
 }
-setInterval(() => { if (document.body.classList.contains('night')) spawnHead('head1'); }, 45000);
-setInterval(() => { if (document.body.classList.contains('night')) spawnHead('head2'); }, 45000);
+spawnHead(head1, 25000);
+spawnHead(head2, 35000);
 
-// Star Animation
 function animateStars() {
   starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
   if (document.body.classList.contains('night')) {

@@ -123,6 +123,14 @@
       border: none;
       margin-top: 10px;
     }
+    .arrow-buttons button {
+      font-size: 2rem;
+      margin: 0 20px;
+      background: #fff;
+      color: #333;
+      border-radius: 10px;
+      cursor: pointer;
+    }
     @media (max-width: 600px) {
       h1 { font-size: 1.8rem; margin-top: 20px; }
       body { font-size: 0.95rem; }
@@ -155,7 +163,7 @@
   </video>
 
   <audio id="bg-music" controls autoplay loop>
-    <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&st=sdbwt4u8&dl=0" type="audio/mpeg">
+    <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&dl=0" type="audio/mpeg">
   </audio>
 
   <div class="whale-buttons">
@@ -171,13 +179,17 @@
 
   <div style="margin-top: 20px;">
     <audio controls>
-      <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&st=2mq5imvj&dl=0" type="audio/mpeg">
+      <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&dl=0" type="audio/mpeg">
     </audio>
   </div>
 
   <div class="tiny">Not tired of my voice yet? Click above.</div>
 
   <canvas id="gameCanvas" width="400" height="500"></canvas>
+  <div class="arrow-buttons">
+    <button onclick="moveLeft()">⬅️</button>
+    <button onclick="moveRight()">➡️</button>
+  </div>
   <div style="font-size: 1.5rem;">Score: <span id="scoreDisplay">0</span></div>
   <div style="font-size: 1rem; color: #ddd;">Top score: <span id="topScore">0</span></div>
 
@@ -195,15 +207,12 @@
     function pauseMusic() {
       document.getElementById('bg-music').pause();
     }
-
     function playMusic() {
       document.getElementById('bg-music').play();
     }
-
     function toggleMode() {
       document.body.classList.toggle("night");
     }
-
     function checkCode() {
       const input = document.getElementById('secret-code').value.trim().toLowerCase();
       const photo = document.getElementById('hidden-photo');
@@ -221,7 +230,6 @@
       ctx.fillStyle = "#0077cc";
       ctx.fillRect(whaleX, whaleY, 80, 30);
     }
-
     function drawHeart(x, y) {
       ctx.fillStyle = "red";
       ctx.beginPath();
@@ -254,10 +262,18 @@
       requestAnimationFrame(updateGame);
     }
 
+    function moveLeft() {
+      whaleX -= 20;
+      whaleX = Math.max(0, whaleX);
+    }
+    function moveRight() {
+      whaleX += 20;
+      whaleX = Math.min(320, whaleX);
+    }
+
     document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") whaleX -= 20;
-      if (e.key === "ArrowRight") whaleX += 20;
-      whaleX = Math.max(0, Math.min(whaleX, 320));
+      if (e.key === "ArrowLeft") moveLeft();
+      if (e.key === "ArrowRight") moveRight();
     });
 
     updateGame();

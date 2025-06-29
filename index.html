@@ -43,6 +43,7 @@ body.night {
   padding: 5px 10px;
   border-radius: 8px;
   font-size: 1rem;
+  transition: background-color 0.5s;
 }
 @keyframes floatClouds {
   0% { transform: translateX(0); }
@@ -236,7 +237,7 @@ input, button {
 
 <div style="margin-top: 20px;">
   <audio controls>
-    <source src="https://dl.dropboxusercontent.com/scl/fi/gqm7x0nqkv73l89wgil01/Singing-whales.mp3?rlkey=57v52ln03b09714f1cmzq813i&dl=0" type="audio/mpeg">
+    <source src="https://dl.dropboxusercontent.com/scl/fi/gqm7x0nqkv73l89wgil01/Singing-whales.mp3?rlkey=57v52ln03b09714f1cmzq813i&dl=1" type="audio/mpeg">
   </audio>
 </div>
 
@@ -301,13 +302,6 @@ const facts = [
 const today = new Date();
 document.getElementById("daily-fact").innerText = "🐋 Whale Fact: " + facts[today.getDate() % facts.length];
 
-// Whale noises
-<div style="margin-top: 20px;">
-  <audio controls>
-    <source src="https://www.dropbox.com/scl/fi/gqm7x0nqkv73l89wgil01/Singing-whales.mp3?rlkey=57v52ln03b09714f1cmzq813i&dl=1" type="audio/mpeg">
-  </audio>
-</div>
-<div class="tiny">Hear what the whale has to say.</div>
 // Game
 let score = 0, whaleX = 160, whaleY = 450, hearts = [];
 const canvas = document.getElementById("gameCanvas"), ctx = canvas.getContext("2d");
@@ -345,79 +339,9 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowRight") moveRight();
 });
 updateGame();
+</script>
 
-// Stars
-const starsCanvas = document.getElementById('stars-canvas'), starsCtx = starsCanvas.getContext('2d');
-let stars = [], shootingStar = null;
-function resizeStars() {
-  starsCanvas.width = window.innerWidth;
-  starsCanvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeStars);
-resizeStars();
-for (let i = 0; i < 150; i++) {
-  stars.push({
-    x: Math.random() * starsCanvas.width,
-    y: Math.random() * starsCanvas.height,
-    radius: Math.random() * 1.5,
-    alpha: Math.random(),
-    delta: Math.random() * 0.02
-  });
-}
-function spawnShootingStar() {
-  shootingStar = { x: Math.random() * starsCanvas.width, y: 0, radius: 2, speed: 10, active: true };
-}
-setInterval(() => {
-  if (document.body.classList.contains('night') && Math.random() < 0.1 && !shootingStar) spawnShootingStar();
-}, 1000);
-function animateStars() {
-  starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
-  if (document.body.classList.contains('night')) {
-    stars.forEach(s => {
-      s.alpha += s.delta;
-      if (s.alpha <= 0 || s.alpha >= 1) s.delta = -s.delta;
-      starsCtx.beginPath();
-      starsCtx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-      starsCtx.fillStyle = `rgba(255,255,255,${s.alpha})`;
-      starsCtx.fill();
-    });
-    if (shootingStar && shootingStar.active) {
-      starsCtx.beginPath();
-      starsCtx.arc(shootingStar.x, shootingStar.y, shootingStar.radius, 0, Math.PI * 2);
-      starsCtx.fillStyle = 'white';
-      starsCtx.fill();
-      shootingStar.x += shootingStar.speed;
-      shootingStar.y += shootingStar.speed;
-      if (shootingStar.y > starsCanvas.height) shootingStar = null;
-    }
-  }
-  requestAnimationFrame(animateStars);
-}
-animateStars();
-
-// Floating Heads
-const head1 = document.getElementById('head1');
-const head2 = document.getElementById('head2');
-function spawnHead(head) {
-  if (document.body.classList.contains('night')) {
-    head.style.display = 'block';
-    let x = window.innerWidth + 100;
-    let y = window.innerHeight / 2 + (Math.random() * 50 - 25);
-    const move = setInterval(() => {
-      x -= 2.5;
-      y -= 0.2;
-      head.style.left = `${x}px`;
-      head.style.top = `${y}px`;
-      if (x < -100) {
-        clearInterval(move);
-        head.style.display = 'none';
-      }
-    }, 30);
-  }
-}
-setInterval(() => spawnHead(head1), 120000);
-setInterval(() => spawnHead(head2), 160000);
-
+<script>
 // Clock
 function updateSingleClock() {
   const isNight = document.body.classList.contains("night");
@@ -429,7 +353,16 @@ function updateSingleClock() {
 setInterval(updateSingleClock, 1000);
 updateSingleClock();
 
-// Temperature and Air Mood
+// Temperature + AQI Mood
+const moods = [
+  "✨ Air’s basically filtered, reverse osmosis vibes.",
+  "🫧 Kinda clean, ngl.",
+  "😗✌️ Meh. Kinda mid.",
+  "🫠 Low-key crusty out here.",
+  "😮‍💨 The air is literally buns af.",
+  "☠️ Babe don’t breathe this."
+];
+
 async function updateTemperature() {
   const apiKey = "113bf4b240cd4c9a81e42115252906";
   const tempDiv = document.getElementById("temp");
@@ -447,14 +380,6 @@ async function updateTemperature() {
 updateTemperature();
 setInterval(updateTemperature, 900000);
 
-const moods = [
-  "✨ Air’s basically filtered, reverse osmosis vibes.",
-  "🫧 Kinda clean, ngl.",
-  "😗✌️ Meh. Kinda mid.",
-  "🫠 Low-key crusty out here.",
-  "😮‍💨 The air is literally buns af.",
-  "☠️ Babe don’t breathe this."
-];
 async function updateAirMood() {
   const apiKey = "113bf4b240cd4c9a81e42115252906";
   const airDiv = document.getElementById("airMood");
@@ -467,12 +392,24 @@ async function updateAirMood() {
     const mood = moods[index - 1] || "🤷‍♂️ Air status unknown.";
     airDiv.textContent = `Air Mood: ${mood}`;
     airDiv.title = `AQI index: ${index}`;
+    airDiv.style.backgroundColor = `rgba(${index * 40},0,0,0.4)`;
+    localStorage.setItem("lastAQI", index);
   } catch {
     airDiv.textContent = "Air Mood: unavailable.";
   }
 }
 updateAirMood();
 setInterval(updateAirMood, 900000);
+
+// Load last AQI
+const storedAQI = localStorage.getItem("lastAQI");
+if (storedAQI) {
+  const mood = moods[storedAQI - 1] || "🤷‍♂️ Air status unknown.";
+  const airDiv = document.getElementById("airMood");
+  airDiv.textContent = `Air Mood: ${mood}`;
+  airDiv.title = `AQI index: ${storedAQI}`;
+  airDiv.style.backgroundColor = `rgba(${storedAQI * 40},0,0,0.4)`;
+}
 </script>
 </body>
 </html>

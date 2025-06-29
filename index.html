@@ -90,13 +90,14 @@ body.night {
   animation:floatClouds 45s linear infinite; /* drift across like clouds */
   pointer-events:none;
 }
-.head {
-  position: absolute;
-  top: 50%;
-  right: -100px;
-  z-index: 3;
-  display: none;
-  pointer-events: none;
+/* floating heads (updated) */
+.head{
+  position:absolute;
+  top:50%;
+  left:calc(100vw + 120px);   /* start just off-screen to the right */
+  z-index:3;
+  display:none;
+  pointer-events:none;
 }
 h1 {
   font-size: 2.5rem;
@@ -188,6 +189,21 @@ input, button {
     margin-top: 20px;
   }
 }
+/* ----------  NASA APOD ---------- */
+#apod{
+  margin:30px auto;
+  max-width:90%;
+  color:#fff;
+}
+#apod img{
+  width:100%;
+  max-height:400px;
+  object-fit:cover;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,.4);
+}
+#apod h3{margin:0 0 6px;font-size:1.3rem}
+#apod .caption{margin-top:8px;font-size:.9rem;line-height:1.3}
 </style>
 </head>
 <body class="day">

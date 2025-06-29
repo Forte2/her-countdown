@@ -356,24 +356,26 @@ function spawnUFO() {
 }
 setInterval(spawnUFO, 15000);
 
-// Enterprise
-function spawnEnterprise() {
+// Heads flying across
+function spawnHeads() {
   if (document.body.classList.contains('night')) {
-    enterprise.style.display = 'block';
-    let x = window.innerWidth;
+    const heads = document.getElementById('headPair');
+    heads.style.display = 'block';
+    let x = window.innerWidth + 200;
     let y = window.innerHeight / 2;
     const move = setInterval(() => {
-      x -= 3;
-      enterprise.style.left = `${x}px`;
-      enterprise.style.top = `${y}px`;
-      if (x < -100) {
+      x -= 2;
+      y -= 0.3;
+      heads.style.right = `${window.innerWidth - x}px`;
+      heads.style.top = `${y}px`;
+      if (x < -200) {
         clearInterval(move);
-        enterprise.style.display = 'none';
+        heads.style.display = 'none';
       }
     }, 30);
   }
 }
-setInterval(spawnEnterprise, 30000);
+setInterval(spawnHeads, 60000);
 
 function animateStars() {
   starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);

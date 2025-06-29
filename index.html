@@ -200,20 +200,39 @@ function checkCode(){
 }
 
 /* ---------- Whale fact ---------- */
-const facts=[
-"Blue whales have hearts the size of a small car.",
-"Sperm whales sleep vertically in the water.",
-"Beluga whales can mimic human voices.",
-"Gray whales are known to spy-hop.",
-"Narwhal tusks are bendy, not hard like horns.",
-"Bowhead whales can live over 200 years.",
-"Orcas are the largest dolphins.",
-"A blue whale’s tongue weighs as much as an elephant.",
-"Minke whales are curious and approach boats.",
-"Beaked whales can dive nearly 10 000 ft."
-];
-$("daily-fact").textContent="🐋 Whale Fact: "+facts[new Date().getDate()%facts.length];
+const facts = [
+  // 1–5 ─────────────────────────────────────────
+  "A blue-whale heartbeat can be heard two miles away with sensitive hydrophones.",
+  "Bowhead whales have been found with 1800-s-era harpoon tips still lodged in them.",
+  "The beluga’s flexible neck lets it turn its head like we do—most whales can’t.",
+  "Sperm-whale clicks hit 230 dB—loud enough to stun a diver at close range.",
+  "Gray-whale mothers whisper to calves so orcas can’t eavesdrop on them.",
 
+  // 6–10 ────────────────────────────────────────
+  "Narwhals use that tusk as a giant sensory organ, detecting subtle water chemistry.",
+  "Some humpbacks have individual calls that other humpbacks will shout back—like names.",
+  "Minke whales can sprint faster than bottlenose dolphins (over 20 mph bursts).",
+  "Fin whales synchronize breathing so precisely their spouts can merge mid-air.",
+  "Pilot-whale pods adopt orphans from totally different species, including dolphins.",
+
+  // 11–15 ───────────────────────────────────────
+  "Antarctic blue whales gain up to 200 lbs (90 kg) **per hour** during feeding season.",
+  "A right-whale callus pattern is unique—biologists ID them the way we use fingerprints.",
+  "Beaked whales can shut down non-essential organs to dive nearly 3 km deep.",
+  "Humpbacks in Hawai‘i form “pickup lines,” males queue behind one another to court a female.",
+  "Some orca clans never interbreed for centuries, staying loyal to distinct vocal dialects.",
+
+  // 16–20 ───────────────────────────────────────
+  "Whale earwax builds up in layers—scientists read it like tree rings to age the animal.",
+  "Blue-whale poop is hot-pink; krill pigments act like a marine highlighter pen.",
+  "Sei whales skim the surface so closely that seabirds land on their backs to rest.",
+  "A gray-whale lunge creates suction so strong it yanks mud-dwelling prey right out of sand.",
+  "The oldest known whale fossil with back legs (Pakicetus) was found in a Pakistani desert."
+];
+
+/* show today’s fact */
+document.getElementById("daily-fact").textContent =
+  "🐋 Whale Fact: " + facts[new Date().getDate() % facts.length];
 /* ---------- Whale song on click ---------- */
 function playWhaleSound(){ const a=$("whale-sound"); a.currentTime=0; a.play(); }
 

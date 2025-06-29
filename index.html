@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
-<title>Hey Pretty Mama</title>
+<title>hey pretty mama</title>
 <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet"/>
 <style>
 html, body {
@@ -113,10 +113,7 @@ h1 {
   width: 100px;
   color: #333;
 }
-.label {
-  font-size: 1rem;
-  margin-top: 5px;
-}
+.label { font-size: 1rem; margin-top: 5px; }
 .gif {
   margin-top: 30px;
   border-radius: 12px;
@@ -176,18 +173,6 @@ input, button {
   font-size: 1.2rem;
   max-width: 90%;
 }
-.whale-sound {
-  margin-top: 10px;
-}
-.whale-sound button {
-  background: rgba(0,0,0,0.2);
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-family: 'Luckiest Guy', cursive;
-}
 @media (max-width: 600px) {
   .info-container {
     flex-direction: column;
@@ -217,9 +202,10 @@ input, button {
 <div class="info-container">
   <div class="info-box" id="single-clock">Loading time...</div>
   <div class="info-box" id="temp">Loading temperature...</div>
+  <div class="info-box" id="airMood">Loading air mood...</div>
 </div>
 
-<h1 title="hi tori 👀">You, Me, and This Countdown - A Love Triangle</h1>
+<h1 title="hi tori 👀">You, Me, and This Countdown — A Love Triangle</h1>
 <button class="toggle-btn" onclick="toggleMode()">Toggle Day/Night</button>
 
 <div id="countdown">
@@ -265,11 +251,33 @@ input, button {
 <div style="font-size: 1rem; color: #ddd;">Top score: whatever you just got</div>
 
 <div id="daily-fact">🐋 Whale Fact: Loading...</div>
-<div class="whale-sound">
-  <button onclick="playWhaleSound()">🔊 Hear what the whale has to say about Israel</button>
-</div>
-
 <script>
+// Countdown, music controls, toggleMode, secret code, whale facts, game, stars, floating heads, clock, temperature same as before...
+
+// Air Mood
+const moods = [
+  "✨ Air’s basically filtered, reverse osmosis vibes.",
+  "🫧 Kinda clean, kinda mid.",
+  "😗✌️ Meh. Could be worse.",
+  "🫠 Low-key crusty out here.",
+  "😮‍💨 The air is literally buns af.",
+  "☠️ Babe don’t breathe this."
+];
+async function updateAirMood() {
+  const apiKey = "113bf4b240cd4c9a81e42115252906";
+  const airDiv = document.getElementById("airMood");
+  try {
+    const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=40.7033,-74.0110&aqi=yes`);
+    const data = await response.json();
+    const index = data.current.air_quality["us-epa-index"];
+    const mood = moods[index - 1] || "🤷‍♂️ Air status unknown.";
+    airDiv.textContent = `Air Mood: ${mood}`;
+  } catch {
+    airDiv.textContent = "Air Mood: unavailable.";
+  }
+}
+updateAirMood();
+setInterval(updateAirMood, 900000);
 // Countdown
 const countDownDate = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
 setInterval(() => {
@@ -292,6 +300,7 @@ function toggleMode() {
   document.getElementById("sun").style.display = document.body.classList.contains("night") ? "none" : "block";
   updateSingleClock();
   updateTemperature();
+  updateAirMood();
 }
 
 // Secret Code
@@ -303,33 +312,19 @@ function checkCode() {
 
 // Whale Facts
 const facts = [
-  "Blue whales have hearts the size of a small car and their heartbeat can be heard 2 miles away.",
-  "Sperm whales sleep vertically in the water, drifting like logs.",
-  "Beluga whales can mimic human speech and have been mistaken for divers.",
-  "Gray whales spy-hop to look around above the surface.",
-  "Humpback whales create bubble nets to trap fish.",
-  "Narwhal tusks are bendy, sensitive teeth.",
+  "Blue whales have hearts the size of a small car.",
+  "Sperm whales sleep vertically in the water.",
+  "Beluga whales can mimic human voices.",
+  "Gray whales are known to spy-hop.",
+  "Narwhal tusks are bendy, not hard like horns.",
   "Bowhead whales can live over 200 years.",
-  "Orcas are actually dolphins and hunt sharks.",
+  "Orcas are the largest dolphins.",
   "A blue whale’s tongue weighs as much as an elephant.",
-  "Minke whales approach boats out of curiosity.",
-  "Some whales slap the water with fins to communicate.",
-  "Humpback whale songs can travel thousands of miles.",
-  "Gray whales migrate over 14,000 miles each year.",
-  "Right whales have calluses unique like fingerprints.",
-  "Beaked whales can dive nearly 10,000 feet deep.",
-  "Pilot whales hold vigil over deceased pod members.",
-  "Sperm whales have the largest brains on Earth.",
-  "Some whales produce ambergris, used in perfumes."
+  "Minke whales are curious and approach boats.",
+  "Beaked whales can dive nearly 10,000 feet."
 ];
 const today = new Date();
 document.getElementById("daily-fact").innerText = "🐋 Whale Fact: " + facts[today.getDate() % facts.length];
-
-// Whale Sound
-function playWhaleSound() {
-  const audio = new Audio("https://dl.dropboxusercontent.com/scl/fi/gqm7x0nqkv73l89wgil01/Singing-whales.mp3?rlkey=57v52ln03b09714f1cmzq813i&dl=1");
-  audio.play();
-}
 
 // Game
 let score = 0, whaleX = 160, whaleY = 450, hearts = [];

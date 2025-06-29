@@ -236,6 +236,7 @@ input, button {
 <div style="font-size: 1rem; color: #ddd;">Top score: whatever you just got</div>
 
 <div id="daily-fact">🐋 Whale Fact: Loading...</div>
+
 <script>
 // Countdown
 const countDownDate = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
@@ -356,6 +357,7 @@ function spawnUFO() {
 setInterval(spawnUFO, 15000);
 
 // Enterprise
+const enterprise = document.getElementById('enterprise');
 function spawnEnterprise() {
   if (document.body.classList.contains('night') && Math.random() < 0.05) {
     enterprise.style.display = 'block';

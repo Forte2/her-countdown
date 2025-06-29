@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
   <title>Countdown to You</title>
   <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet"/>
   <style>
@@ -133,6 +133,9 @@
       border: none;
       margin-top: 10px;
     }
+    .arrow-buttons {
+      margin-top: 10px;
+    }
     .arrow-buttons button {
       font-size: 2rem;
       margin: 0 20px;
@@ -140,6 +143,7 @@
       color: #333;
       border-radius: 10px;
       cursor: pointer;
+      touch-action: manipulation;
     }
     #daily-fact {
       margin: 30px auto;
@@ -202,8 +206,8 @@
     <button onclick="moveLeft()">⬅️</button>
     <button onclick="moveRight()">➡️</button>
   </div>
-  <div style="font-size: 1.5rem;">Score: <span id="scoreDisplay">0</span></div>
-  <div style="font-size: 1rem; color: #ddd;">Top score: <span id="topScore">0</span></div>
+  <div style="font-size: 1.5rem; margin-top:20px;">Score: <span id="scoreDisplay">0</span></div>
+  <div style="font-size: 1rem; color: #ddd;">Top score: whatever you just got</div>
 
   <div id="daily-fact">🐋 Whale Fact: Loading...</div>
 
@@ -230,11 +234,7 @@
     function checkCode() {
       const input = document.getElementById('secret-code').value.trim().toLowerCase();
       const photo = document.getElementById('hidden-photo');
-      if (input === 'scopa') {
-        photo.style.display = 'block';
-      } else {
-        photo.style.display = 'none';
-      }
+      photo.style.display = (input === 'scopa') ? 'block' : 'none';
     }
     function updateClocks() {
       const pst = new Date().toLocaleTimeString('en-US',{timeZone:'America/Los_Angeles'});
@@ -254,30 +254,20 @@
       "Beluga whales are known as 'canaries of the sea' because of their wide range of vocal sounds.",
       "Blue whale hearts can weigh over 1,000 pounds.",
       "Whales help fight climate change by storing carbon in their bodies and fertilizing ocean plankton.",
-      "Some whales have earwax plugs that grow throughout their lives and can be used to estimate their age.",
-      "Bowhead whales can live over 200 years.",
-      "Orcas are the largest members of the dolphin family.",
-      "Whale calves gain up to 200 pounds a day from their mother's milk.",
-      "Humpback whales have unique patterns on their tail flukes, like fingerprints.",
-      "Right whales were called 'right whales to hunt' because they floated when killed—today they are endangered.",
-      "Whales communicate through clicks, whistles, and complex songs.",
-      "Some whales can dive more than 10,000 feet deep in search of squid.",
-      "Minke whales are the smallest baleen whales, growing up to about 35 feet.",
-      "Gray whales often spyhop—lifting their heads vertically out of the water to look around.",
-      "Whale mothers are extremely protective of their calves and will often touch them gently with their fins."
+      "Some whales have earwax plugs that grow throughout their lives and can be used to estimate their age."
     ];
     const today = new Date();
     const index = today.getDate() % facts.length;
     document.getElementById("daily-fact").innerText = "🐋 Whale Fact: " + facts[index];
 
-    let score=0, topScore=0, whaleX=160, whaleY=450, hearts=[];
-    const canvas=document.getElementById(\"gameCanvas\"),ctx=canvas.getContext(\"2d\");
-    function drawWhale(){ctx.fillStyle=\"#0077cc\";ctx.fillRect(whaleX,whaleY,80,30);}
-    function drawHeart(x,y){ctx.fillStyle=\"red\";ctx.beginPath();ctx.moveTo(x,y);ctx.bezierCurveTo(x,y-10,x-10,y-15,x-15,y);ctx.bezierCurveTo(x-20,y+15,x,y+25,x,y+35);ctx.bezierCurveTo(x,y+25,x+20,y+15,x+15,y);ctx.bezierCurveTo(x+10,y-15,x,y-10,x,y);ctx.fill();}
-    function updateGame(){ctx.clearRect(0,0,canvas.width,canvas.height);drawWhale();for(let i=0;i<hearts.length;i++){hearts[i].y+=2;drawHeart(hearts[i].x,hearts[i].y);if(hearts[i].y>whaleY&&hearts[i].x>whaleX&&hearts[i].x<whaleX+80){hearts.splice(i,1);score++;document.getElementById('scoreDisplay').innerText=score;if(score>topScore){topScore=score;document.getElementById('topScore').innerText=topScore;}i--;}}if(Math.random()<0.03)hearts.push({x:Math.random()*380+10,y:-20});requestAnimationFrame(updateGame);}
+    let score=0, whaleX=160, whaleY=450, hearts=[];
+    const canvas=document.getElementById("gameCanvas"),ctx=canvas.getContext("2d");
+    function drawWhale(){ctx.fillStyle="#0077cc";ctx.fillRect(whaleX,whaleY,80,30);}
+    function drawHeart(x,y){ctx.fillStyle="red";ctx.beginPath();ctx.moveTo(x,y);ctx.bezierCurveTo(x,y-10,x-10,y-15,x-15,y);ctx.bezierCurveTo(x-20,y+15,x,y+25,x,y+35);ctx.bezierCurveTo(x,y+25,x+20,y+15,x+15,y);ctx.bezierCurveTo(x+10,y-15,x,y-10,x,y);ctx.fill();}
+    function updateGame(){ctx.clearRect(0,0,canvas.width,canvas.height);drawWhale();for(let i=0;i<hearts.length;i++){hearts[i].y+=2;drawHeart(hearts[i].x,hearts[i].y);if(hearts[i].y>whaleY&&hearts[i].x>whaleX&&hearts[i].x<whaleX+80){hearts.splice(i,1);score++;document.getElementById('scoreDisplay').innerText=score;i--;}}if(Math.random()<0.03)hearts.push({x:Math.random()*380+10,y:-20});requestAnimationFrame(updateGame);}
     function moveLeft(){whaleX-=20;whaleX=Math.max(0,whaleX);}
     function moveRight(){whaleX+=20;whaleX=Math.min(320,whaleX);}
-    document.addEventListener(\"keydown\",e=>{if(e.key==\"ArrowLeft\")moveLeft();if(e.key==\"ArrowRight\")moveRight();});
+    document.addEventListener("keydown",e=>{if(e.key=="ArrowLeft")moveLeft();if(e.key=="ArrowRight")moveRight();});
     updateGame();
   </script>
 </body>

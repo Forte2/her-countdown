@@ -312,21 +312,43 @@ function checkCode() {
   photo.style.display = (input === 'scopa') ? 'block' : 'none';
 }
 
-// Whale Facts
+<!-- ────────────── Whale facts (20 fresher ones) ────────────── -->
+<script>
+/*  ---------- Whale fact ----------  */
 const facts = [
-  "Blue whales have hearts the size of a small car.",
-  "Sperm whales sleep vertically in the water.",
-  "Beluga whales can mimic human voices.",
-  "Gray whales are known to spy-hop.",
-  "Narwhal tusks are bendy, not hard like horns.",
-  "Bowhead whales can live over 200 years.",
-  "Orcas are the largest dolphins.",
-  "A blue whale’s tongue weighs as much as an elephant.",
-  "Minke whales are curious and approach boats.",
-  "Beaked whales can dive nearly 10,000 feet."
+  // 1–5 ──────────────────────────────────────────
+  "A blue-whale heartbeat can be heard two miles away with hydrophones.",
+  "Bowhead whales can live 200 + years—some still carry 1800-s harpoon tips.",
+  "Belugas can bend their necks side-to-side; most whales’ neck bones are fused.",
+  "Sperm-whale clicks top 230 dB—loud enough to stun a diver at arm’s length.",
+  "Gray-whale mothers whisper to calves so lurking orcas can’t eavesdrop.",
+
+  // 6–10 ─────────────────────────────────────────
+  "A narwhal’s tusk is a sensory organ packed with millions of nerve endings.",
+  "Humpbacks trap fish with spiralling ‘bubble-nets’ then lunge-feed in the centre.",
+  "Minke whales can sprint > 20 mph—faster than most dolphins.",
+  "Fin-whale pairs exhale so in-sync their twin spouts sometimes merge.",
+  "Pilot-whale pods have adopted orphaned dolphins from totally different species.",
+
+  // 11–15 ────────────────────────────────────────
+  "Antarctic blue whales gain about 200 lbs (90 kg) **per hour** during krill season.",
+  "Right-whale callus patterns are unique—biologists use them like fingerprints.",
+  "Cuvier’s beaked whales dive nearly 3 km and stay under for two+ hours.",
+  "Humpback males in Hawai‘i form ‘queues’, lining up behind one female to court.",
+  "Some orca clans keep distinct dialects and never interbreed for centuries.",
+
+  // 16–20 ────────────────────────────────────────
+  "Whales build ear-wax ‘plugs’—scientists read the layers like tree rings.",
+  "Blue-whale poop is bright pink; krill pigment acts as a floating highlighter.",
+  "Sei whales skim so close to the surface that seabirds land on their backs to rest.",
+  "A gray-whale suction-feed can yank burrowed prey straight out of the seabed.",
+  "The earliest whale ancestor, **Pakicetus**, had four legs and roamed on land in Pakistan."
 ];
-const today = new Date();
-document.getElementById("daily-fact").innerText = "🐋 Whale Fact: " + facts[today.getDate() % facts.length];
+
+/*  Show today’s fact  */
+document.getElementById("daily-fact").textContent =
+  "🐋 Whale Fact: " + facts[new Date().getDate() % facts.length];
+</script>
 
 // Game
 let score = 0, whaleX = 160, whaleY = 450, hearts = [];

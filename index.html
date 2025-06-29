@@ -176,6 +176,18 @@ input, button {
   font-size: 1.2rem;
   max-width: 90%;
 }
+.whale-sound {
+  margin-top: 10px;
+}
+.whale-sound button {
+  background: rgba(0,0,0,0.2);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Luckiest Guy', cursive;
+}
 @media (max-width: 600px) {
   .info-container {
     flex-direction: column;
@@ -253,6 +265,9 @@ input, button {
 <div style="font-size: 1rem; color: #ddd;">Top score: whatever you just got</div>
 
 <div id="daily-fact">🐋 Whale Fact: Loading...</div>
+<div class="whale-sound">
+  <button onclick="playWhaleSound()">🔊 Hear what the whale has to say?</button>
+</div>
 
 <script>
 // Countdown
@@ -288,29 +303,33 @@ function checkCode() {
 
 // Whale Facts
 const facts = [
-  "Blue whales have hearts the size of a small car and their heartbeat can be detected from over 2 miles away.",
-  "Sperm whales sleep vertically in the water, drifting in groups like enormous logs.",
-  "Beluga whales can mimic the rhythm and tones of human speech and have been mistaken for people underwater.",
-  "Gray whales are known to spy-hop—lifting their heads out of the water to look around above the surface.",
-  "Humpback whales create bubble nets to trap fish, working in teams to herd their prey.",
-  "Narwhal tusks are actually elongated teeth that can bend about a foot in any direction without breaking.",
-  "Bowhead whales can live over 200 years, making them the longest-lived mammals on Earth.",
-  "Orcas (killer whales) are actually the largest species of dolphin and can hunt sharks cooperatively.",
-  "A blue whale’s tongue weighs as much as an adult elephant.",
-  "Minke whales are known to be curious and will often approach boats to investigate.",
-  "Some whale species use their flippers to slap the water as a form of communication.",
-  "Humpback whales sing complex songs that can last hours and travel thousands of miles underwater.",
-  "The gray whale has the longest migration of any mammal, up to 14,000 miles round-trip.",
-  "Right whales have calluses on their heads that are unique to each individual, like fingerprints.",
-  "Some bowhead whales still carry ivory harpoons in their flesh from 19th-century whalers.",
-  "Beaked whales can dive to nearly 10,000 feet deep and stay submerged for over two hours.",
-  "Fin whales are the second-largest animals ever and can accelerate faster than a racehorse.",
-  "Pilot whales form tight-knit pods and have been observed holding vigil over deceased pod members.",
-  "Sperm whales have the largest brains of any animal—up to 20 pounds.",
-  "Some whales produce ambergris, a waxy substance once used in perfume making."
+  "Blue whales have hearts the size of a small car and their heartbeat can be heard 2 miles away.",
+  "Sperm whales sleep vertically in the water, drifting like logs.",
+  "Beluga whales can mimic human speech and have been mistaken for divers.",
+  "Gray whales spy-hop to look around above the surface.",
+  "Humpback whales create bubble nets to trap fish.",
+  "Narwhal tusks are bendy, sensitive teeth.",
+  "Bowhead whales can live over 200 years.",
+  "Orcas are actually dolphins and hunt sharks.",
+  "A blue whale’s tongue weighs as much as an elephant.",
+  "Minke whales approach boats out of curiosity.",
+  "Some whales slap the water with fins to communicate.",
+  "Humpback whale songs can travel thousands of miles.",
+  "Gray whales migrate over 14,000 miles each year.",
+  "Right whales have calluses unique like fingerprints.",
+  "Beaked whales can dive nearly 10,000 feet deep.",
+  "Pilot whales hold vigil over deceased pod members.",
+  "Sperm whales have the largest brains on Earth.",
+  "Some whales produce ambergris, used in perfumes."
 ];
 const today = new Date();
 document.getElementById("daily-fact").innerText = "🐋 Whale Fact: " + facts[today.getDate() % facts.length];
+
+// Whale Sound
+function playWhaleSound() {
+  const audio = new Audio("https://dl.dropboxusercontent.com/scl/fi/gqm7x0nqkv73l89wgil01/Singing-whales.mp3?rlkey=57v52ln03b09714f1cmzq813i&dl=1");
+  audio.play();
+}
 
 // Game
 let score = 0, whaleX = 160, whaleY = 450, hearts = [];

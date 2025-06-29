@@ -271,8 +271,8 @@ function spawnHead(h){
     if(x<-100){clearInterval(id);h.style.display="none";}
   },30);
 }
-setInterval(() => spawnHead(head1), 3000);   // 3 s
-setInterval(() => spawnHead(head2), 5000);   // 5 s
+setInterval(()=>spawnHead(head1),120000);
+setInterval(()=>spawnHead(head2),160000);
 
 /* ============ INITIAL DISPLAY FOR SUN / MOON ============ */
 moon.style.display="none";           /* day by default */

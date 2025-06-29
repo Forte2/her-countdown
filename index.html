@@ -301,6 +301,13 @@ const facts = [
 const today = new Date();
 document.getElementById("daily-fact").innerText = "🐋 Whale Fact: " + facts[today.getDate() % facts.length];
 
+// Whale noises
+<div style="margin-top: 20px;">
+  <audio controls>
+    <source src="https://www.dropbox.com/scl/fi/gqm7x0nqkv73l89wgil01/Singing-whales.mp3?rlkey=57v52ln03b09714f1cmzq813i&dl=1" type="audio/mpeg">
+  </audio>
+</div>
+<div class="tiny">Hear what the whale has to say.</div>
 // Game
 let score = 0, whaleX = 160, whaleY = 450, hearts = [];
 const canvas = document.getElementById("gameCanvas"), ctx = canvas.getContext("2d");

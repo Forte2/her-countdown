@@ -30,7 +30,7 @@ body.night {
   cursor: pointer;
   font-family: 'Luckiest Guy', cursive;
 }
-.clock-single, #temp {
+.clock-container {
   position: fixed;
   top: 10px;
   left: 10px;
@@ -40,7 +40,16 @@ body.night {
   font-size: 1rem;
   z-index: 10;
 }
-#temp { top: 35px; }
+.temp-container {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.3);
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  z-index: 10;
+}
 @keyframes floatClouds {
   0% { transform: translateX(0); }
   100% { transform: translateX(150vw); }
@@ -75,7 +84,6 @@ body.night {
   font-size: 2rem;
   z-index: 3;
   display: none;
-  pointer-events: none;
 }
 .head {
   position: absolute;
@@ -83,7 +91,6 @@ body.night {
   right: -100px;
   z-index: 3;
   display: none;
-  pointer-events: none;
 }
 h1 {
   font-size: 2.5rem;
@@ -117,7 +124,6 @@ audio { display: block; margin: 20px auto; }
   justify-content: center;
   gap: 20px;
   margin-bottom: 20px;
-  flex-wrap: wrap;
 }
 .whale-button {
   font-size: 2rem;
@@ -154,7 +160,6 @@ input, button {
   color: #333;
   border-radius: 10px;
   cursor: pointer;
-  touch-action: manipulation;
 }
 #daily-fact {
   margin: 30px auto;
@@ -176,8 +181,8 @@ input, button {
 <div id="head2" class="head">
   <img src="https://dl.dropboxusercontent.com/scl/fi/7wf3kkx881fi67nfjzll4/IMG_3133-removebg-preview.png" style="width:60px;">
 </div>
-<div class="clock-single" id="single-clock">Loading time...</div>
-<div id="temp">Loading temperature...</div>
+<div class="clock-container" id="clock">Loading time...</div>
+<div class="temp-container" id="temp">Loading temperature...</div>
 
 <h1 title="hi tori 👀">You, Me, and This Countdown — A Love Triangle</h1>
 <button class="toggle-btn" onclick="toggleMode()">Toggle Day/Night</button>
@@ -238,13 +243,16 @@ setInterval(() => {
   document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
 }, 1000);
 
+// Toggle Day/Night
+function toggleMode() {
+  document.body.classList.toggle("night");
+  updateClock();
+  updateTemperature();
+}
+
+// Music Controls
 function pauseMusic() { document.getElementById('bg-music').pause(); }
 function playMusic() { document.getElementById('bg-music').play(); }
-function toggleMode() { 
-  document.body.classList.toggle("night"); 
-  updateSingleClock(); 
-  updateTemperature(); 
-}
 
 // Secret Code
 function checkCode() {
@@ -252,6 +260,36 @@ function checkCode() {
   const photo = document.getElementById('hidden-photo');
   photo.style.display = (input === 'scopa') ? 'block' : 'none';
 }
+
+// Clock
+function updateClock() {
+  const isNight = document.body.classList.contains("night");
+  const tz = isNight ? "America/New_York" : "America/Los_Angeles";
+  const label = isNight ? "Your Time" : "Tyler's Time";
+  const time = new Date().toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit' });
+  document.getElementById("clock").textContent = `${label}: ${time}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// Temperature
+async function updateTemperature() {
+  const apiKey = "113bf4b240cd4c9a81e42115252906";
+  const tempDiv = document.getElementById("temp");
+  try {
+    const isNight = document.body.classList.contains("night");
+    const coords = isNight ? "40.7033,-74.0110" : "34.0122,-118.4279";
+    const label = isNight ? "Your temperature" : "Tyler's temperature";
+    const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${coords}`);
+    const data = await response.json();
+    const tempF = data.current.temp_f;
+    tempDiv.textContent = `${label}: ${tempF}°F`;
+  } catch {
+    tempDiv.textContent = "Temperature unavailable.";
+  }
+}
+updateTemperature();
+setInterval(updateTemperature, 900000);
 
 // Whale Fact
 const facts = [
@@ -268,7 +306,10 @@ document.getElementById("daily-fact").innerText = "🐋 Whale Fact: " + facts[in
 // Game
 let score = 0, whaleX = 160, whaleY = 450, hearts = [];
 const canvas = document.getElementById("gameCanvas"), ctx = canvas.getContext("2d");
-function drawWhale() { ctx.fillStyle = "#0077cc"; ctx.fillRect(whaleX, whaleY, 80, 30); }
+function drawWhale() {
+  ctx.fillStyle = "#0077cc";
+  ctx.fillRect(whaleX, whaleY, 80, 30);
+}
 function drawHeart(x, y) {
   ctx.fillStyle = "red";
   ctx.beginPath();
@@ -295,15 +336,15 @@ function updateGame() {
   if (Math.random() < 0.03) hearts.push({ x: Math.random() * 380 + 10, y: -20 });
   requestAnimationFrame(updateGame);
 }
-function moveLeft() { whaleX -= 20; whaleX = Math.max(0, whaleX); }
-function moveRight() { whaleX += 20; whaleX = Math.min(320, whaleX); }
+function moveLeft() { whaleX = Math.max(0, whaleX - 20); }
+function moveRight() { whaleX = Math.min(320, whaleX + 20); }
 document.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") moveLeft();
   if (e.key === "ArrowRight") moveRight();
 });
 updateGame();
 
-// Stars
+// Stars & Shooting Star
 const starsCanvas = document.getElementById('stars-canvas'), starsCtx = starsCanvas.getContext('2d');
 let stars = [], shootingStar = null;
 function resizeStars() {
@@ -312,16 +353,79 @@ function resizeStars() {
 }
 window.addEventListener('resize', resizeStars); resizeStars();
 for (let i = 0; i < 150; i++) {
-  stars.push({
-    x: Math.random() * starsCanvas.width,
-    y: Math.random() * starsCanvas.height,
-    radius: Math.random() * 1.5,
-    alpha: Math.random(),
-    delta: Math.random() * 0.02
-  });
+  stars.push({ x: Math.random() * starsCanvas.width, y: Math.random() * starsCanvas.height, radius: Math.random() * 1.5, alpha: Math.random(), delta: Math.random() * 0.02 });
 }
 function spawnShootingStar() {
-  shootingStar = { x:
+  shootingStar = { x: Math.random() * starsCanvas.width, y: 0, radius: 2, speed: 10, active: true };
+}
+setInterval(() => {
+  if (document.body.classList.contains('night') && Math.random() < 0.1 && !shootingStar) spawnShootingStar();
+}, 1000);
+function animateStars() {
+  starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+  if (document.body.classList.contains('night')) {
+    stars.forEach(s => {
+      s.alpha += s.delta;
+      if (s.alpha <= 0 || s.alpha >= 1) s.delta = -s.delta;
+      starsCtx.beginPath();
+      starsCtx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+      starsCtx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+      starsCtx.fill();
+    });
+    if (shootingStar && shootingStar.active) {
+      starsCtx.beginPath();
+      starsCtx.arc(shootingStar.x, shootingStar.y, shootingStar.radius, 0, Math.PI * 2);
+      starsCtx.fillStyle = 'white';
+      starsCtx.fill();
+      shootingStar.x += shootingStar.speed;
+      shootingStar.y += shootingStar.speed;
+      if (shootingStar.y > starsCanvas.height) shootingStar = null;
+    }
+  }
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+
+// UFO
+const ufo = document.getElementById('ufo');
+function spawnUFO() {
+  if (document.body.classList.contains('night') && Math.random() < 0.1) {
+    ufo.style.display = 'block';
+    ufo.style.left = '-50px';
+    let x = -50;
+    const move = setInterval(() => {
+      x += 2;
+      ufo.style.left = `${x}px`;
+      if (x > window.innerWidth + 50) {
+        clearInterval(move);
+        ufo.style.display = 'none';
+      }
+    }, 30);
+  }
+}
+setInterval(spawnUFO, 15000);
+
+// Floating Heads
+const head1 = document.getElementById('head1');
+const head2 = document.getElementById('head2');
+function spawnHead(head) {
+  if (document.body.classList.contains('night')) {
+    head.style.display = 'block';
+    let x = window.innerWidth + 100;
+    let y = window.innerHeight / 2 + (Math.random() * 50 - 25);
+    const move = setInterval(() => {
+      x -= 2;
+      head.style.left = `${x}px`;
+      head.style.top = `${y}px`;
+      if (x < -100) {
+        clearInterval(move);
+        head.style.display = 'none';
+      }
+    }, 30);
+  }
+}
+setInterval(() => spawnHead(head1), 120000);
+setInterval(() => spawnHead(head2), 160000);
 </script>
 </body>
 </html>

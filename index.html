@@ -357,15 +357,13 @@ function spawnUFO() {
 setInterval(spawnUFO, 15000);
 
 // Enterprise
-const enterprise = document.getElementById('enterprise');
 function spawnEnterprise() {
-  if (document.body.classList.contains('night') && Math.random() < 0.05) {
+  if (document.body.classList.contains('night')) {
     enterprise.style.display = 'block';
-    let x = window.innerWidth + 100;
+    let x = window.innerWidth;
     let y = window.innerHeight / 2;
     const move = setInterval(() => {
       x -= 3;
-      y -= 0.5;
       enterprise.style.left = `${x}px`;
       enterprise.style.top = `${y}px`;
       if (x < -100) {

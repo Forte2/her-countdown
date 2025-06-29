@@ -30,6 +30,16 @@ body.night {
   cursor: pointer;
   font-family: 'Luckiest Guy', cursive;
 }
+.temp {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(255,255,255,0.2);
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  z-index: 10;
+}
 .clock-container {
   background: rgba(255,255,255,0.2);
   border-radius: 16px;
@@ -47,13 +57,12 @@ body.night {
   100% { transform: translateX(150vw); }
 }
 .cloud {
-  position: absolute; /* CHANGED: from fixed to absolute so they stay in place when scrolling */
+  position: absolute;
   background: #fff;
   border-radius: 50%;
   box-shadow: -60px 20px #fff, -30px 10px #fff, 0 0 #fff, 30px 10px #fff, 60px 20px #fff;
   opacity: 0.8;
   animation: floatClouds 60s linear infinite;
-  transform: translateX(-200px);
   z-index: 1;
 }
 .cloud1 { width: 200px; height: 60px; top: 50px; left: -250px; animation-delay: 0s; }
@@ -70,15 +79,6 @@ body.night {
   box-shadow: 0 0 30px 10px rgba(255,255,255,0.5);
   z-index: 2;
   opacity: 0.7;
-}
-#ufo {
-  position: fixed;
-  top: 120px;
-  left: -50px;
-  font-size: 2rem;
-  z-index: 3;
-  display: none;
-  pointer-events: none;
 }
 #head1, #head2 {
   position: fixed;
@@ -110,10 +110,7 @@ h1 {
   width: 100px;
   color: #333;
 }
-.label {
-  font-size: 1rem;
-  margin-top: 5px;
-}
+.label { font-size: 1rem; margin-top: 5px; }
 .gif {
   margin-top: 30px;
   border-radius: 12px;
@@ -175,25 +172,21 @@ input, button {
 </style>
 </head>
 <body class="day">
+<div class="temp" id="temp">Loading temperature...</div>
 <canvas id="stars-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
 <div id="moon"></div>
 <div class="cloud cloud1"></div>
 <div class="cloud cloud2"></div>
 <div class="cloud cloud3"></div>
-<div id="ufo">🛸</div>
-<div id="head1">
-  <img src="https://dl.dropboxusercontent.com/scl/fi/at6j5aa64x3t1zw8hgnja/IMG_2568-removebg-preview.png?rlkey=zsvas936ckb88c1bjhoibzyxj&st=e4expuk0" style="width:80px;">
-</div>
-<div id="head2">
-  <img src="https://dl.dropboxusercontent.com/scl/fi/7wf3kkx881fi67nfjzll4/IMG_3133-removebg-preview.png?rlkey=5zhov8wgzx0lv0ip5ecmt46fc&st=tqh9mixq" style="width:80px;">
-</div>
+<div id="head1"><img src="https://dl.dropboxusercontent.com/scl/fi/at6j5aa64x3t1zw8hgnja/IMG_2568-removebg-preview.png?rlkey=zsvas936ckb88c1bjhoibzyxj&dl=0" style="width:80px;"></div>
+<div id="head2"><img src="https://dl.dropboxusercontent.com/scl/fi/7wf3kkx881fi67nfjzll4/IMG_3133-removebg-preview.png?rlkey=5zhov8wgzx0lv0ip5ecmt46fc&dl=0" style="width:80px;"></div>
 
-<h1>You, Me, and This Countdown — A Love Triangle</h1>
+<h1 title="Hi Tori 👀">You, Me, and This Countdown — A Love Triangle</h1>
 <button class="toggle-btn" onclick="toggleMode()">Toggle Day/Night</button>
 
 <div class="clock-container">
-  <div class="clock" id="pst-clock">🕰️ Tyler's Time (PST)</div>
-  <div class="clock" id="est-clock">🕰️ Tori's Time (EST)</div>
+  <div class="clock" id="pst-clock">🕰️ Tyler's Time (PST): --:--</div>
+  <div class="clock" id="est-clock">🕰️ Tori's Time (EST): --:--</div>
 </div>
 
 <div id="countdown">
@@ -219,10 +212,10 @@ input, button {
 <div>
   <label for="secret-code">Enter the name of the place we went on our first date:</label><br>
   <input type="text" id="secret-code" placeholder="hint: jk, no hints" oninput="checkCode()" />
-  <img id="hidden-photo" src="IMG_2797.jpeg" alt="Hidden Memory" style="display:none; max-width:80%; margin-top:20px; border-radius:12px;">
+  <img id="hidden-photo" src="IMG_2797.jpeg" alt="Hidden Memory" style="display:none; max-width: 80%; margin-top: 20px; border-radius: 12px;">
 </div>
 
-<div style="margin-top:20px;">
+<div style="margin-top: 20px;">
   <audio controls>
     <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&dl=0" type="audio/mpeg">
   </audio>
@@ -235,11 +228,10 @@ input, button {
   <button onclick="moveLeft()">⬅️</button>
   <button onclick="moveRight()">➡️</button>
 </div>
-<div style="font-size:1.5rem; margin-top:20px;">Score: <span id="scoreDisplay">0</span></div>
-<div style="font-size:1rem; color:#ddd;">Top score: whatever you just got</div>
+<div style="font-size: 1.5rem; margin-top:20px;">Score: <span id="scoreDisplay">0</span></div>
+<div style="font-size: 1rem; color: #ddd;">Top score: whatever you just got</div>
 
 <div id="daily-fact">🐋 Whale Fact: Loading...</div>
-
 <script>
 // Countdown
 const countDownDate = new Date("August 28, 2025 17:00:00 GMT-0700").getTime();
@@ -254,7 +246,7 @@ setInterval(() => {
 
 function pauseMusic() { document.getElementById('bg-music').pause(); }
 function playMusic() { document.getElementById('bg-music').play(); }
-function toggleMode() { document.body.classList.toggle("night"); }
+function toggleMode() { document.body.classList.toggle("night"); updateTemperature(); }
 
 function checkCode() {
   const input = document.getElementById('secret-code').value.trim().toLowerCase();
@@ -340,48 +332,6 @@ setInterval(() => {
   if (document.body.classList.contains('night') && Math.random() < 0.1 && !shootingStar) spawnShootingStar();
 }, 1000);
 
-// UFO
-const ufo = document.getElementById('ufo');
-function spawnUFO() {
-  if (document.body.classList.contains('night') && Math.random() < 0.1) {
-    ufo.style.display = 'block';
-    ufo.style.left = '-50px';
-    let x = -50;
-    const move = setInterval(() => {
-      x += 2;
-      ufo.style.left = x + 'px';
-      if (x > window.innerWidth + 50) {
-        clearInterval(move);
-        ufo.style.display = 'none';
-      }
-    }, 30);
-  }
-}
-setInterval(spawnUFO, 15000);
-
-// Floating heads
-const head1 = document.getElementById('head1');
-const head2 = document.getElementById('head2');
-function spawnHead(head) {
-  if (document.body.classList.contains('night')) {
-    head.style.display = 'block';
-    let x = window.innerWidth + 80;
-    let y = Math.random() * (window.innerHeight * 0.5);
-    const move = setInterval(() => {
-      x -= 2;
-      y -= 0.3;
-      head.style.left = `${x}px`;
-      head.style.top = `${y}px`;
-      if (x < -80 || y < -80) {
-        clearInterval(move);
-        head.style.display = 'none';
-      }
-    }, 30);
-  }
-}
-setInterval(() => spawnHead(head1), 45000);
-setInterval(() => spawnHead(head2), 60000);
-
 function animateStars() {
   starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
   if (document.body.classList.contains('night')) {
@@ -406,6 +356,46 @@ function animateStars() {
   requestAnimationFrame(animateStars);
 }
 animateStars();
+
+// Floating Heads
+const head1 = document.getElementById('head1');
+const head2 = document.getElementById('head2');
+function spawnHead(element) {
+  if (document.body.classList.contains('night')) {
+    element.style.display = 'block';
+    let x = window.innerWidth + 100;
+    let y = Math.random() * (window.innerHeight / 2);
+    const move = setInterval(() => {
+      x -= 1.5;
+      element.style.left = `${x}px`;
+      element.style.top = `${y}px`;
+      if (x < -100) {
+        clearInterval(move);
+        element.style.display = 'none';
+      }
+    }, 30);
+  }
+}
+setInterval(() => spawnHead(head1), 120000);
+setInterval(() => spawnHead(head2), 150000);
+
+// Weather
+async function updateTemperature() {
+  const apiKey = "dcb5f6e8e7mshf0e3b61e4b2fb71p1892fajsn73e50b045a03";
+  const location = document.body.classList.contains("night") ? "New York" : "Santa Monica";
+  const tempDiv = document.getElementById("temp");
+  try {
+    const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=YOUR_WEATHERAPI_KEY&q=${location}`);
+    const data = await response.json();
+    const tempF = data.current.temp_f;
+    const label = document.body.classList.contains("night") ? "Your temperature" : "Tyler's temperature";
+    tempDiv.textContent = `${label}: ${tempF}°F`;
+  } catch {
+    tempDiv.textContent = "Temperature unavailable.";
+  }
+}
+updateTemperature();
+setInterval(updateTemperature, 900000);
 </script>
 </body>
 </html>

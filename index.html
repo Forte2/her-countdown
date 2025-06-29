@@ -115,11 +115,28 @@ canvas.game-canvas{border:2px solid #ccc;background:#e6f7ff;display:block;margin
   <source src="244188_small.mp4" type="video/mp4">
 </video>
 
-<!-- music playlist (handled in JS) -->
-<audio id="bg-music" preload="auto"></audio>
-<div class="whale-buttons">
-  <button class="whale-button" onclick="pauseMusic()">🐋</button>
-  <button class="whale-button" onclick="playMusic()">🐳</button>
+<!-- 🎵  music playlist  -->
+<audio id="bg-music" controls preload="metadata">
+  <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&dl=1"  type="audio/mpeg">
+  <source src="https://dl.dropboxusercontent.com/scl/fi/b1bja2neem0zfpe82yimv/Do-You-Remember.mp3?rlkey=pzamspbpoej92n37ddoftprch&dl=1"  type="audio/mpeg">
+  <source src="https://dl.dropboxusercontent.com/scl/fi/0a56znw8yg2vjlwzr3rht/Taylor-Swift-Delicate-Recorded-at-The-Tracking-Room-Nashville.mp3?rlkey=stjjumv9t9z25ckfkkb2rewk6&dl=1" type="audio/mpeg">
+  <source src="https://dl.dropboxusercontent.com/scl/fi/0vxk899m5yh19esc1u7fo/All-That-And-More-Sailboat.mp3?rlkey=zwlzf8d5nmpsotupubhd50uh4&dl=1"  type="audio/mpeg">
+  Your browser can’t play MP3.
+</audio>
+
+<!-- ▶️  voice note (above the game) -->
+<div style="margin-top:20px">
+  <audio controls preload="metadata">
+    <source src="https://dl.dropboxusercontent.com/scl/fi/47oiteyruexurqtdprj3n/New-Recording-14.mp3?rlkey=ki0tbhksz8o9qb0qoqqejtwgd&dl=1" type="audio/mpeg">
+  </audio>
+</div>
+
+<!-- 🔊  whale sound (clickable text below fact) -->
+<audio id="whale-sound" preload="metadata">
+  <source src="https://dl.dropboxusercontent.com/scl/fi/gqm7x0nqkv73l89wgil01/Singing-whales.mp3?rlkey=57v52ln03b09714f1cmzq813i&dl=1" type="audio/mpeg">
+</audio>
+<div class="tiny" style="cursor:pointer" onclick="playWhaleSound()">
+  🔊 Hear what the whale has to say about Israel
 </div>
 
 <!-- secret-code reveal -->

@@ -385,7 +385,7 @@ async function updateTemperature() {
   const location = document.body.classList.contains("night") ? "New York" : "Santa Monica";
   const tempDiv = document.getElementById("temp");
   try {
-    const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=YOUR_WEATHERAPI_KEY&q=${location}`);
+   const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=113bf4b240cd4c9a81e42115252906&q=${location}`);
     const data = await response.json();
     const tempF = data.current.temp_f;
     const label = document.body.classList.contains("night") ? "Your temperature" : "Tyler's temperature";

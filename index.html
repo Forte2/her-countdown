@@ -463,25 +463,18 @@ function spawnHead(el) {
     }
   }, FRAME);
 }
-
 /* ---------- Floating heads timing ---------- */
 const SPEED = 2.5;   // px per frame  (leave as-is)
 const FRAME = 30;    // ms per frame  (leave as-is)
 
-/* total travel time for one full drift (not used for testing) */
-const travelTime = ((window.innerWidth + 240) / (SPEED / (FRAME / 1000))) * 1000; // ms
+/* total travel time for one full drift (just kept for reference) */
+const travelTime =
+  ((window.innerWidth + 240) / (SPEED / (FRAME / 1000))) * 1000; // ms
 
-/* TESTING VALUES — change these numbers only */
-const interval1 = 6000;  // head1 spawns every 6 000 ms  (≈ 6 s)
-const interval2 = 9000;  // head2 spawns every 9 000 ms  (≈ 9 s)
+/* --- new schedule: head1 every 2 min, head2 every 3 min --- */
+setInterval(() => spawnHead(head1), 120_000);  // 120 000 ms = 2 min
+setInterval(() => spawnHead(head2), 180_000);  // 180 000 ms = 3 min
 
-/* when you’re happy, you can switch back to something like:
-   const interval1 = Math.round(travelTime + 4000);
-   const interval2 = Math.round(travelTime * 1.3 + 4000);
-*/
-
-setInterval(() => spawnHead(head1), interval1);
-setInterval(() => spawnHead(head2), interval2);
 // Clock
 function updateSingleClock() {
   const isNight = document.body.classList.contains("night");

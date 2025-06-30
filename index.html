@@ -298,27 +298,41 @@ async function updateTempAQI(){
 updateTempAQI();setInterval(updateTempAQI,900000);
 </script>
 
-<!-- ---------------- NASA APOD loader ---------------- -->
+<!-- ─── NASA APOD loader (single clean copy) ─── -->
 <script>
-const APOD_KEY="91vGPnJ7lTr84dz4PBrLnpanFupQsDrDEYvmHQwy";      /* your key */
+/* Your personal key from https://api.nasa.gov/ */
+const APOD_KEY = "91vGPnJ7lTr84dz4PBrLnpanFupQsDrDEYvmHQwy";
 
-async function showAPOD(){
-  const box=document.getElementById("apod");
-  try{
-    const res=await fetch(`https://api.nasa.gov/planetary/apod?api_key=${APOD_KEY}`);
-    const data=await res.json();
-    if(data.media_type==="image"){
-      box.innerHTML=`<img src="${data.url}" alt="${data.title}">
-        <h3>${data.title}</h3><div class="caption">${data.explanation}</div>`;
-    }else{
-      box.innerHTML="<h3>NASA APOD is a video today — not embedded here.</h3>";
+/* where the card lives in the DOM */
+const apodBox = document.getElementById("apod");
+
+async function showAPOD () {
+  try {
+    const res  = await fetch(
+      `https://api.nasa.gov/planetary/apod?api_key=${APOD_KEY}`
+    );
+    const data = await res.json();
+
+    /* some days APOD is a video (YouTube/Vimeo) – skip those */
+    if (data.media_type === "image") {
+      apodBox.innerHTML = `
+        <img src="${data.url}" alt="${data.title}">
+        <h3>${data.title}</h3>
+        <div class="caption">${data.explanation}</div>`;
+    } else {
+      apodBox.innerHTML =
+        "<h3>NASA APOD is a video today — click <a href='" +
+        data.url +
+        "' target='_blank' rel='noopener'>here</a>.</h3>";
     }
-  }catch(e){
-    console.error(e);
-    box.innerHTML="<h3>Couldn’t load NASA photo 🤖</h3>";
+  } catch (err) {
+    console.error("APOD fetch failed:", err);
+    apodBox.innerHTML = "<h3>Couldn’t load NASA photo 🤖</h3>";
   }
 }
-showAPOD();setInterval(showAPOD,86_400_000);   /* refresh every 24 h */
+
+showAPOD();                       /* first load now   */
+setInterval(showAPOD, 86_400_000);/* refresh every day*/
 </script>
 
 </body>

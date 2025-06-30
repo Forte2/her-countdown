@@ -1,16 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport"
-      content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
 <title>hey pretty mama</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap"
-      rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet" />
 
 <style>
-/* ---------- GLOBAL ---------- */
+/* ---------------- GLOBAL ---------------- */
 html,body{margin:0;padding:0;font-family:'Luckiest Guy',cursive;text-align:center;
   overflow-x:hidden;color:#fff;font-size:1.1rem;
   background:linear-gradient(#ffd1dc,#ffe6b3,#cceeff);transition:background 2s}
@@ -70,22 +69,19 @@ canvas.game-canvas{border:2px solid #ccc;background:#e6f7ff;display:block;margin
 
 <body class="day">
 
-<!-- background -->
-<canvas id="stars-canvas"
-        style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0"></canvas>
+<!-- background layers -->
+<canvas id="stars-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0"></canvas>
 <div class="cloud cloud1"></div><div class="cloud cloud2"></div><div class="cloud cloud3"></div>
 <div id="ufo">🛸</div>
 
 <!-- floating heads -->
-<div id="head1" class="head"><img src="https://dl.dropboxusercontent.com/scl/fi/5o04858h6fdqt23amgfwl/IMG_2568-removebg-preview.png?raw=1"
-     width="60" height="60" style="object-fit:contain"></div>
-<div id="head2" class="head"><img src="https://dl.dropboxusercontent.com/scl/fi/padr9l1hdyatevnojn5kd/IMG_3133-removebg-preview.png?raw=1"
-     width="60" height="60" style="object-fit:contain"></div>
+<div id="head1" class="head"><img src="https://dl.dropboxusercontent.com/scl/fi/5o04858h6fdqt23amgfwl/IMG_2568-removebg-preview.png?raw=1" width="60" height="60" style="object-fit:contain"></div>
+<div id="head2" class="head"><img src="https://dl.dropboxusercontent.com/scl/fi/padr9l1hdyatevnojn5kd/IMG_3133-removebg-preview.png?raw=1" width="60" height="60" style="object-fit:contain"></div>
 
 <!-- status row -->
 <div class="info-container">
   <div class="info-box" id="single-clock">Loading time…</div>
-  <div class="info-box" id="airMood"  title="Loading AQI…">Loading air mood…</div>
+  <div class="info-box" id="airMood" title="Loading AQI…">Loading air mood…</div>
   <div class="info-box" id="temp">Loading temperature…</div>
 </div>
 
@@ -107,7 +103,7 @@ canvas.game-canvas{border:2px solid #ccc;background:#e6f7ff;display:block;margin
 </video>
 
 <!-- playlist -->
-<audio id="bg-music" controls preload="metadata" loop>
+<audio id="bg-music" controls preload="metadata">
   <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?raw=1" type="audio/mpeg">
 </audio>
 <div class="whale-buttons">
@@ -118,8 +114,7 @@ canvas.game-canvas{border:2px solid #ccc;background:#e6f7ff;display:block;margin
 <!-- secret photo -->
 <label for="secret-code">Enter the name of the place we went on our first date:</label><br>
 <input id="secret-code" placeholder="hint: jk, no hints" oninput="checkCode()">
-<img id="hidden-photo" src="IMG_2797.jpeg"
-     style="display:none;max-width:80%;margin-top:20px;border-radius:12px">
+<img id="hidden-photo" src="IMG_2797.jpeg" style="display:none;max-width:80%;margin-top:20px;border-radius:12px">
 
 <!-- voice note -->
 <div style="margin-top:20px">
@@ -146,17 +141,13 @@ canvas.game-canvas{border:2px solid #ccc;background:#e6f7ff;display:block;margin
 </audio>
 <div class="tiny" style="cursor:pointer" onclick="playWhaleSound()">🔊 Hear what the whale has to say about Israel</div>
 
-<!-- ---------- MAIN JS ---------- -->
+<!-- ---------------- MAIN JS ---------------- -->
 <script>
-/* -------- handy handles -------- */
+/* element handles (needed for IDs with hyphens) */
 const days        = document.getElementById("days");
 const hours       = document.getElementById("hours");
 const minutes     = document.getElementById("minutes");
 const seconds     = document.getElementById("seconds");
-
-const singleClock = document.getElementById("single-clock");
-const tempBox     = document.getElementById("temp");
-const airMoodBox  = document.getElementById("airMood");
 
 const bgMusic     = document.getElementById("bg-music");
 const whaleSound  = document.getElementById("whale-sound");
@@ -171,23 +162,23 @@ const head1       = document.getElementById("head1");
 const head2       = document.getElementById("head2");
 
 /* -------- countdown -------- */
-const target = new Date("2025-08-28T17:00:00-07:00").getTime();
+const countDownDate = new Date("2025-08-28T17:00:00-07:00").getTime();
 setInterval(()=>{
-  const d = target - Date.now();
-  days.textContent    = Math.floor(d / 864e5);
-  hours.textContent   = Math.floor(d % 864e5 / 36e5);
-  minutes.textContent = Math.floor(d % 36e5 / 6e4);
-  seconds.textContent = Math.floor(d % 6e4 / 1e3);
+  const d = countDownDate - Date.now();
+  days.innerText    = Math.floor(d / 864e5);
+  hours.innerText   = Math.floor(d % 864e5 / 36e5);
+  minutes.innerText = Math.floor(d % 36e5 / 6e4);
+  seconds.innerText = Math.floor(d % 6e4 / 1e3);
 },1000);
 
 /* -------- music controls -------- */
 function pauseMusic(){ bgMusic.pause(); }
-function playMusic(){  bgMusic.play();  }
+function playMusic(){ bgMusic.play(); }
 
 /* -------- whale sound -------- */
 function playWhaleSound(){ whaleSound.currentTime = 0; whaleSound.play(); }
 
-/* -------- day/night toggle -------- */
+/* -------- day / night toggle -------- */
 function toggleMode(){
   document.body.classList.toggle("night");
   moon.style.display = document.body.classList.contains("night") ? "block" : "none";
@@ -202,24 +193,44 @@ function checkCode(){
 }
 
 /* -------- whale facts -------- */
-const facts=[/* your 20-item list (unchanged) */];
-dailyFact.textContent = "🐋 Whale Fact: " +
-  facts[new Date().getDate() % facts.length];
-
+const facts = [
+  "Blue-whale hearts are the size of a small car.",
+  "Sperm whales sleep vertical in the water.",
+  "Belugas can mimic human voices.",
+  "Gray-whale moms whisper to calves so orcas can’t eavesdrop.",
+  "Narwhal tusks are actually sensory organs that read ocean chemistry.",
+  "Bowhead whales can live over 200 years (the oldest mammal!).",
+  "Orcas are technically the largest dolphins.",
+  "A blue-whale tongue weighs as much as an elephant.",
+  "Minke whales can burst-swim over 20 mph.",
+  "Beaked whales dive nearly 10 000 ft after shutting down non-essential organs.",
+  "Antarctic blues gain ~200 lbs **per hour** during peak feeding season.",
+  "Right-whale callus patterns are unique—scientists use them like fingerprints.",
+  "Humpbacks form courtship ‘pickup lines’—males queue politely for a female.",
+  "Whale earwax builds in rings; researchers age them the way you read tree rings.",
+  "Blue-whale poop is hot-pink; krill pigment turns the ocean neon.",
+  "Sei whales skim so close to the surface that seabirds land for a rest.",
+  "Pilot-whale pods adopt orphaned dolphins of other species.",
+  "Fin-whale pairs time their breaths so their spouts merge mid-air.",
+  "Some humpbacks have ‘names’: individual calls other whales repeat.",
+  "Pakicetus, the earliest whale ancestor, had legs and lived in a Pakistani desert."
+];
 /* -------- mini-game (unchanged) -------- */
 let score=0,wx=160,wy=450,hearts=[];
 const cvs=document.getElementById("gameCanvas"),ctx=cvs.getContext("2d");
 function drawWhale(){ctx.fillStyle="#0077cc";ctx.fillRect(wx,wy,80,30);}
-function drawHeart(x,y){ctx.fillStyle="red";ctx.beginPath();
+function drawHeart(x,y){
+  ctx.fillStyle="red";ctx.beginPath();
   ctx.moveTo(x,y);ctx.bezierCurveTo(x,y-10,x-10,y-15,x-15,y);
   ctx.bezierCurveTo(x-20,y+15,x,y+25,x,y+35);
   ctx.bezierCurveTo(x,y+25,x+20,y+15,x+15,y);
-  ctx.bezierCurveTo(x+10,y-15,x,y-10,x,y);ctx.fill();}
+  ctx.bezierCurveTo(x+10,y-15,x,y-10,x,y);ctx.fill();
+}
 function updateGame(){
   ctx.clearRect(0,0,cvs.width,cvs.height);drawWhale();
   hearts.forEach((h,i)=>{
     h.y+=2;drawHeart(h.x,h.y);
-    if(h.y>wy&&h.x>wx&&h.x<wx+80){hearts.splice(i,1);score++;scoreDisplay.textContent=score;}
+    if(h.y>wy && h.x>wx && h.x<wx+80){hearts.splice(i,1);score++;document.getElementById("scoreDisplay").textContent=score;}
   });
   if(Math.random()<.03)hearts.push({x:Math.random()*360+20,y:-20});
   requestAnimationFrame(updateGame);
@@ -229,12 +240,13 @@ function moveRight(){wx=Math.min(320,wx+20);}
 document.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")moveLeft();if(e.key==="ArrowRight")moveRight();});
 updateGame();
 
-/* -------- stars -------- */
-const sc=document.getElementById("stars-canvas"),sctx=sc.getContext("2d");let stars=[];function resizeStars(){sc.width=innerWidth;sc.height=innerHeight;}
+/* -------- stars & shooting star -------- */
+const sc=document.getElementById("stars-canvas"),sctx=sc.getContext("2d");let stars=[];
+function resizeStars(){sc.width=innerWidth;sc.height=innerHeight;}
 resizeStars();addEventListener("resize",resizeStars);
 for(let i=0;i<150;i++)stars.push({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.5,a:Math.random(),d:Math.random()*.02});
 let shooting=null;
-setInterval(()=>{if(document.body.classList.contains("night")&&Math.random()<.08&&!shooting)shooting={x:Math.random()*sc.width,y:0,v:10};},1000);
+setInterval(()=>{if(document.body.classList.contains("night") && Math.random()<.08 && !shooting)shooting={x:Math.random()*sc.width,y:0,v:10};},1000);
 function drawStars(){
   sctx.clearRect(0,0,sc.width,sc.height);
   if(!document.body.classList.contains("night"))return requestAnimationFrame(drawStars);
@@ -250,7 +262,7 @@ drawStars();
 
 /* -------- floating heads -------- */
 function spawnHead(el){
-  if(el.style.display==="block"||!document.body.classList.contains("night"))return;
+  if(el.style.display==="block" || !document.body.classList.contains("night"))return;
   el.style.display="block";
   let x=innerWidth+120,y=innerHeight/2+(Math.random()*60-30);
   const mover=setInterval(()=>{
@@ -261,14 +273,12 @@ function spawnHead(el){
 setInterval(()=>spawnHead(head1),6000);
 setInterval(()=>spawnHead(head2),9000);
 
-/* -------- single clock & weather -------- */
+/* -------- single clock & weather (existing logic) -------- */
 function updateClock(){
   const night=document.body.classList.contains("night");
-  const tz   = night ? "America/New_York" : "America/Los_Angeles";
-  const lbl  = night ? "Your Time"        : "Tyler's Time";
-  singleClock.textContent =
-    `${lbl}: `+
-    new Date().toLocaleTimeString("en-US",{timeZone:tz,hour:"2-digit",minute:"2-digit"});
+  const tz=night?"America/New_York":"America/Los_Angeles";
+  const label=night?"Your Time":"Tyler's Time";
+  singleClock.textContent=`${label}: `+new Date().toLocaleTimeString("en-US",{timeZone:tz,hour:"2-digit",minute:"2-digit"});
 }
 setInterval(updateClock,1000);updateClock();
 
@@ -279,40 +289,37 @@ async function updateTempAQI(){
   try{
     const r=await fetch(`https://api.weatherapi.com/v1/current.json?key=${key}&q=${coords}&aqi=yes`);
     const j=await r.json();
-    tempBox.textContent=(night?"Your temp":"Tyler's temp")+": "+j.current.temp_f+"°F";
+    temp.textContent=(night?"Your temp":"Tyler's temp")+": "+j.current.temp_f+"°F";
     const idx=j.current.air_quality["us-epa-index"];
     const moods=["✨ reverse-osmosis vibes","🫧 kinda clean","😗✌️ kinda mid","🫠 low-key crusty","😮‍💨 literally buns","☠️ don’t breathe this"];
-    airMoodBox.textContent="Air Mood: "+(moods[idx-1]||"unknown");
-    airMoodBox.title=`AQI: ${idx}`;
-    airMoodBox.style.background=idx>=4?"rgba(255,0,0,.4)":"rgba(0,0,0,.3)";
-  }catch(e){
-    console.error(e);
-    tempBox.textContent="Temp n/a";airMoodBox.textContent="Air Mood: n/a";
-  }
+    airMood.textContent="Air Mood: "+(moods[idx-1]||"unknown");airMood.title=`AQI: ${idx}`;
+    airMood.style.background=idx>=4?"rgba(255,0,0,.4)":"rgba(0,0,0,.3)";
+  }catch{temp.textContent="Temp n/a";airMood.textContent="Air Mood: n/a";}
 }
-updateTempAQI();setInterval(updateTempAQI,900_000);
+updateTempAQI();setInterval(updateTempAQI,900000);
 </script>
 
-<!-- ---------- NASA APOD loader ---------- -->
+<!-- ---------------- NASA APOD loader ---------------- -->
 <script>
-const APOD_KEY="91vGPnJ7lTr84dz4PBrLnpanFupQsDrDEYvmHQwy";
-const apodBox=document.getElementById("apod");
+const APOD_KEY="91vGPnJ7lTr84dz4PBrLnpanFupQsDrDEYvmHQwy";      /* your key */
+
 async function showAPOD(){
+  const box=document.getElementById("apod");
   try{
     const res=await fetch(`https://api.nasa.gov/planetary/apod?api_key=${APOD_KEY}`);
     const data=await res.json();
     if(data.media_type==="image"){
-      apodBox.innerHTML=`<img src="${data.url}" alt="${data.title}">
+      box.innerHTML=`<img src="${data.url}" alt="${data.title}">
         <h3>${data.title}</h3><div class="caption">${data.explanation}</div>`;
     }else{
-      apodBox.innerHTML=`<h3>NASA APOD is a video today — <a href="${data.url}" target="_blank" rel="noopener">watch here</a>.</h3>`;
+      box.innerHTML="<h3>NASA APOD is a video today — not embedded here.</h3>";
     }
-  }catch(err){
-    console.error("APOD fetch failed:",err);
-    apodBox.innerHTML="<h3>Couldn’t load NASA photo 🤖</h3>";
+  }catch(e){
+    console.error(e);
+    box.innerHTML="<h3>Couldn’t load NASA photo 🤖</h3>";
   }
 }
-showAPOD();setInterval(showAPOD,86_400_000);
+showAPOD();setInterval(showAPOD,86_400_000);   /* refresh every 24 h */
 </script>
 
 </body>

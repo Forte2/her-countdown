@@ -378,7 +378,7 @@ const facts = [
 
 const today = new Date();
 document.getElementById("daily-fact").innerText =
-  "🐋 Whale Fact: " + facts[today.getDate() % facts.length];
+  "🐋" + facts[today.getDate() % facts.length];
 
 // Game
 let score = 0, whaleX = 160, whaleY = 450, hearts = [];

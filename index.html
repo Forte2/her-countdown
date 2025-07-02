@@ -255,9 +255,28 @@ input, button {
   <source src="244188_small.mp4" type="video/mp4" />
 </video>
 
-<audio id="bg-music" controls autoplay loop>
-  <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?rlkey=ol6qzq4q2wrpirlkrjswro9d2&dl=0" type="audio/mpeg">
-</audio>
+<!-- ─────────────── PLAYLIST ──────────────── -->
+<div id="playlist">
+  <audio id="track1" controls preload="metadata">
+    <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?raw=1" type="audio/mpeg">
+    Your browser doesn’t support HTML5 audio.
+  </audio>
+
+  <audio id="track2" controls preload="metadata">
+    <source src="https://dl.dropboxusercontent.com/scl/fi/b1bja2neem0zfpe82yimv/Do-You-Remember.mp3?raw=1" type="audio/mpeg">
+    Your browser doesn’t support HTML5 audio.
+  </audio>
+
+  <audio id="track3" controls preload="metadata">
+    <source src="https://dl.dropboxusercontent.com/scl/fi/0a56znw8yg2vjlwzr3rht/Taylor-Swift-Delicate-Recorded-at-The-Tracking-Room-Nashville.mp3?raw=1" type="audio/mpeg">
+    Your browser doesn’t support HTML5 audio.
+  </audio>
+
+  <audio id="track4" controls preload="metadata">
+    <source src="https://dl.dropboxusercontent.com/scl/fi/0vxk899m5yh19esc1u7fo/All-That-And-More-Sailboat.mp3?raw=1" type="audio/mpeg">
+    Your browser doesn’t support HTML5 audio.
+  </audio>
+</div>
 
 <div class="whale-buttons">
   <button onclick="pauseMusic()" class="whale-button">🐋</button>
@@ -335,19 +354,31 @@ function checkCode() {
 
 // Whale Facts
 const facts = [
-  "Blue whales have hearts the size of a small car.",
-  "Sperm whales sleep vertically in the water.",
-  "Beluga whales can mimic human voices.",
-  "Gray whales are known to spy-hop.",
-  "Narwhal tusks are bendy, not hard like horns.",
-  "Bowhead whales can live over 200 years.",
-  "Orcas are the largest dolphins.",
-  "A blue whale’s tongue weighs as much as an elephant.",
-  "Minke whales are curious and approach boats.",
-  "Beaked whales can dive nearly 10,000 feet."
+  "Gargantuan hearts: A blue whale’s heart is about the size of a small car and can weigh over 1,000 lbs.",
+  "Vertical sleepers: Sperm whales often sleep “standing” vertically in the water, drifting head-up.",
+  "Vocal mimics: Beluga whales can mimic a range of sounds—including human speech cadences.",
+  "Stealthy whispers: Mother gray whales use soft, low-frequency calls so orca predators can’t eavesdrop.",
+  "Sensory tusks: Narwhal tusks aren’t horns but sensory organs packed with nerve endings to detect water chemistry.",
+  "Ancient longevity: Bowhead whales can live over 200 years, making them the longest-lived mammals.",
+  "Dolphin cousins: Orcas (killer whales) are actually the largest members of the dolphin family.",
+  "Elephant tongue: A blue whale’s tongue can weigh as much as an adult elephant—3–4 tons.",
+  "Speed demons: Minke whales can burst-swim at over 20 mph when startled.",
+  "Deep divers: Cuvier’s beaked whales hold the mammalian dive record—nearly 10,000 ft deep for up to two hours.",
+  "Rapid refueling: Antarctic blue whales can pack on 150–200 lbs of blubber per hour during peak krill feeding.",
+  "Fingerprint calluses: Right whales have unique callosity patterns on their heads—used like whale “fingerprints.”",
+  "Courtship queues: Humpback males form “singing chains” in which they take turns serenading a female.",
+  "Earwax time-capsules: Whale earplugs accumulate wax in annual layers, letting scientists age them like tree rings.",
+  "Neon poop: A blue whale’s fecal plume is bright pink from krill pigments—a crucial iron fertilizer for oceans.",
+  "Seabird pit stops: Sei whales skim-feed so close to the surface that seabirds sometimes land on their backs.",
+  "Adoptive pods: Pilot whales have been observed adopting orphaned dolphins—even of different species.",
+  "Synchronized breaths: Fin whale pairs sometimes time their surface blows so their spouts merge into one.",
+  "Named songs: Individual humpbacks develop signature song phrases—others repeat them like social names.",
+  "Land-walking ancestors: Pakicetus, an early whale ancestor 50 M years ago, had four legs and lived in Pakistan’s desert."
 ];
+
 const today = new Date();
-document.getElementById("daily-fact").innerText = "🐋 Whale Fact: " + facts[today.getDate() % facts.length];
+document.getElementById("daily-fact").innerText =
+  "🐋 Whale Fact: " + facts[today.getDate() % facts.length];
 
 // Game
 let score = 0, whaleX = 160, whaleY = 450, hearts = [];

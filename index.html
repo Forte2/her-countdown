@@ -256,27 +256,32 @@ input, button {
 </video>
 
 <!-- ─────────────── PLAYLIST ──────────────── -->
-<div id="playlist">
-  <audio id="track1" controls preload="metadata">
-    <source src="https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?raw=1" type="audio/mpeg">
-    Your browser doesn’t support HTML5 audio.
-  </audio>
+<audio id="audio-player" controls preload="metadata">
+  Your browser doesn’t support HTML5 audio.
+</audio>
+<script>
+  const playlist = [
+    "https://dl.dropboxusercontent.com/scl/fi/taqihndudrnlq5ruo1shn/Next-to-You.mp3?dl=1",
+    "https://dl.dropboxusercontent.com/scl/fi/b1bja2neem0zfpe82yimv/Do-You-Remember.mp3?dl=1",
+    "https://dl.dropboxusercontent.com/scl/fi/0a56znw8yg2vjlwzr3rht/Taylor-Swift-Delicate-Recorded-at-The-Tracking-Room-Nashville.mp3?dl=1",
+    "https://dl.dropboxusercontent.com/scl/fi/0vxk899m5yh19esc1u7fo/All-That-And-More-Sailboat.mp3?dl=1"
+  ];
+  const audioPlayer = document.getElementById("audio-player");
+  let currentTrack = 0;
 
-  <audio id="track2" controls preload="metadata">
-    <source src="https://dl.dropboxusercontent.com/scl/fi/b1bja2neem0zfpe82yimv/Do-You-Remember.mp3?raw=1" type="audio/mpeg">
-    Your browser doesn’t support HTML5 audio.
-  </audio>
+  function loadTrack(i) {
+    audioPlayer.src = playlist[i];
+    audioPlayer.play();
+  }
 
-  <audio id="track3" controls preload="metadata">
-    <source src="https://dl.dropboxusercontent.com/scl/fi/0a56znw8yg2vjlwzr3rht/Taylor-Swift-Delicate-Recorded-at-The-Tracking-Room-Nashville.mp3?raw=1" type="audio/mpeg">
-    Your browser doesn’t support HTML5 audio.
-  </audio>
+  audioPlayer.addEventListener("ended", () => {
+    currentTrack = (currentTrack + 1) % playlist.length;
+    loadTrack(currentTrack);
+  });
 
-  <audio id="track4" controls preload="metadata">
-    <source src="https://dl.dropboxusercontent.com/scl/fi/0vxk899m5yh19esc1u7fo/All-That-And-More-Sailboat.mp3?raw=1" type="audio/mpeg">
-    Your browser doesn’t support HTML5 audio.
-  </audio>
-</div>
+  // start with the first track
+  loadTrack(0);
+</script>
 
 <div class="whale-buttons">
   <button onclick="pauseMusic()" class="whale-button">🐋</button>
